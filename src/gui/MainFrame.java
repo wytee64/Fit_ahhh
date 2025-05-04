@@ -9,13 +9,20 @@ import models.User;
 public class MainFrame extends JFrame {
     private WorkoutPanel workoutPanel;
     private JToggleButton darkModeToggle;
+    
     ProgressPanel progressPanel; // This should be declared here, not inside the constructor
+    private User currentUser;
     
     public MainFrame(User user) {
+        this.currentUser = user;
+        
         setTitle("Fitness Tracker - Welcome " + user.getName());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 700);
+        setSize(900, 600);
         setLocationRelativeTo(null);
+        
+        // Set background color
+        getContentPane().setBackground(new Color(255, 248, 240)); // Warm light background
         
         // Create main panel with border layout
         JPanel mainPanel = new JPanel(new BorderLayout());

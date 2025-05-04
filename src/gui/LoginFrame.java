@@ -20,11 +20,11 @@ public class LoginFrame extends JFrame {
         setLocationRelativeTo(null);
         
         // Set the frame background
-        getContentPane().setBackground(new Color(240, 248, 255));
+        getContentPane().setBackground(new Color(255, 248, 240)); // Warm light background
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-        cardPanel.setBackground(new Color(240, 248, 255));
+        cardPanel.setBackground(new Color(255, 248, 240)); // Warm light background
 
         // Login Panel
         JPanel loginPanel = createLoginPanel();
@@ -39,28 +39,28 @@ public class LoginFrame extends JFrame {
 
     private JPanel createLoginPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(new Color(240, 248, 255));
+        panel.setBackground(new Color(255, 248, 240)); // Warm light background
         panel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(70, 130, 180), 2), 
+                BorderFactory.createLineBorder(new Color(220, 80, 20), 2), // Orange-red border
                 "Login", 
                 javax.swing.border.TitledBorder.CENTER, 
                 javax.swing.border.TitledBorder.TOP,
                 new Font("Arial", Font.BOLD, 16),
-                new Color(70, 130, 180)));
+                new Color(220, 80, 20))); // Orange-red text
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
         emailField = new JTextField(20);
         passwordField = new JPasswordField(20);
         JButton loginButton = new JButton("Login");
-        loginButton.setBackground(new Color(70, 130, 180));
+        loginButton.setBackground(new Color(220, 80, 20)); // Orange-red button
         loginButton.setForeground(Color.WHITE);
         loginButton.setFont(new Font("Arial", Font.BOLD, 12));
         loginButton.setFocusPainted(false);
         
         JButton switchToRegisterButton = new JButton("New User? Register");
-        switchToRegisterButton.setBackground(new Color(240, 248, 255));
-        switchToRegisterButton.setForeground(new Color(70, 130, 180));
+        switchToRegisterButton.setBackground(new Color(255, 248, 240)); // Warm light background
+        switchToRegisterButton.setForeground(new Color(220, 80, 20)); // Orange-red text
         switchToRegisterButton.setBorderPainted(false);
         switchToRegisterButton.setFocusPainted(false);
 
@@ -90,14 +90,14 @@ public class LoginFrame extends JFrame {
     private JPanel createRegisterPanel() {
         // Apply similar styling to the register panel
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(new Color(240, 248, 255));
+        panel.setBackground(new Color(255, 248, 240)); // Warm light background
         panel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(70, 130, 180), 2), 
+                BorderFactory.createLineBorder(new Color(220, 80, 20), 2), // Orange-red border
                 "Register", 
                 javax.swing.border.TitledBorder.CENTER, 
                 javax.swing.border.TitledBorder.TOP,
                 new Font("Arial", Font.BOLD, 16),
-                new Color(70, 130, 180)));
+                new Color(220, 80, 20))); // Orange-red text
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 

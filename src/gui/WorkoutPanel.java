@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -614,6 +616,58 @@ public class WorkoutPanel extends JPanel {
             cal.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0);
             cal.set(java.util.Calendar.MILLISECOND, 0);
             return cal.getTime();
+        }
+    }
+}
+
+// Inner class for rendering edit and delete buttons
+class ButtonsRenderer extends JPanel implements TableCellRenderer {
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        if (isSelected) {
+            setBackground(table.getSelectionBackground());
+        } else {
+            setBackground(table.getBackground());
+        }
+        return this;
+    }
+    private JButton editButton;
+    private JButton deleteButton;
+    
+    public ButtonsRenderer() {
+        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        setOpaque(true);
+        
+        editButton = new JButton("Edit");
+        editButton.setBackground(new Color(255, 140, 0)); // Darker orange
+        editButton.setForeground(Color.WHITE);
+        editButton.setFont(new Font("Arial", Font.BOLD, 10));
+        editButton.setFocusPainted(false);
+        
+        deleteButton = new JButton("Delete");
+        deleteButton.setBackground(new Color(220, 53, 69)); // Keep red for delete
+        deleteButton.setForeground(Color.WHITE);
+        deleteButton.setFont(new Font("Arial", Font.BOLD, 10));
+        deleteButton.setFocusPainted(false);
+        
+        add(editButton);
+        add(deleteButton);
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == editButton) {
+            editButton.setBackground(new Color(255, 140, 0));
+            editButton.setForeground(Color.WHITE);
+            editButton.setFont(new Font("Arial", Font.BOLD, 10));
+            editButton.setFocusPainted(false);
+        }
+        
+        if (e.getSource() == deleteButton) {
+            deleteButton.setBackground(new Color(220, 53, 69));
+            deleteButton.setForeground(Color.WHITE);
+            deleteButton.setFont(new Font("Arial", Font.BOLD, 10));
+            deleteButton.setFocusPainted(false);
         }
     }
 }
