@@ -153,9 +153,9 @@ public class LoginPage extends JFrame {
         this.dispose();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new LoginPage().setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            new LoginPage().setVisible(true);
+//        });
+//    }
 }

@@ -10,16 +10,12 @@ public class LocalStorage {
     
     public static void saveWorkouts(int userId, List<Workout> workouts) {
         File dir = new File(STORAGE_DIR);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        
+        if (!dir.exists()) dir.mkdirs();
         File file = new File(STORAGE_DIR + File.separator + "workouts_" + userId + ".dat");
-        
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
             oos.writeObject(workouts);
         } catch (IOException e) {
-            System.err.println("Error saving workouts to file: " + e.getMessage());
+            System.err.println("error while trying to save file\n" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -28,9 +24,7 @@ public class LocalStorage {
     public static List<Workout> loadWorkouts(int userId) {
         File file = new File(STORAGE_DIR + File.separator + "workouts_" + userId + ".dat");
         
-        if (!file.exists()) {
-            return new ArrayList<>();
-        }
+        if (!file.exists()) return new ArrayList<>();
         
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             return (List<Workout>) ois.readObject();

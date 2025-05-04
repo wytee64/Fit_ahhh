@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
@@ -14,7 +15,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import models.User;
 import models.Workout;
-import utils.ColorTheme;
 
 public class Work_outPanel extends JPanel {
     private final User currentUser;
@@ -55,8 +55,14 @@ public class Work_outPanel extends JPanel {
     
     private void createFormPanel() {
         JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBorder(ColorTheme.createTitledBorder("Add Workout"));
-        formPanel.setBackground(ColorTheme.SECONDARY);
+        formPanel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(new Color(220, 80, 20), 2),
+                "Add Workout",
+                TitledBorder.CENTER,
+                TitledBorder.TOP,
+                new Font("Arial", Font.BOLD, 16),
+                new Color(220, 80, 20)));
+        formPanel.setBackground(new Color(255, 248, 240));
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -148,7 +154,13 @@ public class Work_outPanel extends JPanel {
         
         // Add table to scroll pane
         JScrollPane scrollPane = new JScrollPane(workoutTable);
-        scrollPane.setBorder(ColorTheme.createTitledBorder("Your Workouts"));
+        scrollPane.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(new Color(220, 80, 20), 2),
+                "Your Workouts",
+                TitledBorder.CENTER,
+                TitledBorder.TOP,
+                new Font("Arial", Font.BOLD, 16),
+                new Color(220, 80, 20)));
         
         // Add scroll pane to the main panel
         add(scrollPane, BorderLayout.CENTER);
@@ -156,16 +168,22 @@ public class Work_outPanel extends JPanel {
     
     private void createButtonPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buttonPanel.setBackground(ColorTheme.SECONDARY);
+        buttonPanel.setBackground(new Color(255, 248, 240));
         
         // Add button
         addButton = new JButton("Add Workout");
-        ColorTheme.styleButton(addButton, true);
+        addButton.setBackground(new Color(220, 80, 20)); // PRIMARY color
+        addButton.setForeground(Color.WHITE);
+        addButton.setFont(new Font("Georgia", Font.BOLD, 12));
+        addButton.setFocusPainted(false);
         addButton.addActionListener(e -> handleAddWorkout());
         
         // Edit button
         editButton = new JButton("Update Selected");
-        ColorTheme.styleButton(editButton, true);
+        editButton.setBackground(new Color(220, 80, 20)); // PRIMARY color
+        editButton.setForeground(Color.WHITE);
+        editButton.setFont(new Font("Georgia", Font.BOLD, 12));
+        editButton.setFocusPainted(false);
         editButton.setEnabled(false);
         editButton.addActionListener(e -> handleEditWorkout());
         
@@ -173,14 +191,17 @@ public class Work_outPanel extends JPanel {
         deleteButton = new JButton("Delete Selected");
         deleteButton.setBackground(new Color(220, 53, 69));
         deleteButton.setForeground(Color.WHITE);
-        deleteButton.setFont(ColorTheme.BUTTON_FONT);
+        deleteButton.setFont(new Font("Georgia", Font.BOLD, 12));
         deleteButton.setFocusPainted(false);
         deleteButton.setEnabled(false);
         deleteButton.addActionListener(e -> handleDeleteWorkout());
         
         // Refresh button
         refreshButton = new JButton("Refresh");
-        ColorTheme.styleButton(refreshButton, false);
+        refreshButton.setBackground(new Color(255, 140, 0)); // SECONDARY button color
+        refreshButton.setForeground(Color.WHITE);
+        refreshButton.setFont(new Font("Arial", Font.BOLD, 12));
+        refreshButton.setFocusPainted(false);
         refreshButton.addActionListener(e -> refreshWorkouts());
         
         // Add buttons to panel

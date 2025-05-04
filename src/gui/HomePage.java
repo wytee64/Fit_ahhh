@@ -42,18 +42,15 @@ public class HomePage extends JFrame {
         pnl.setBackground(new Color(70, 130, 180));
         pnl.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-        // Welcome label ting
         JLabel welcomeLbl = new JLabel("Welcome, " + user.getName() + "!");
         welcomeLbl.setFont(new Font("Georgia", Font.BOLD, 18));
         welcomeLbl.setForeground(Color.WHITE);
         pnl.add(welcomeLbl, BorderLayout.WEST);
         JPanel controlsPnl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         controlsPnl.setOpaque(false);
-
         darkModeBtn = new JToggleButton("Dark Mode");
         darkModeBtn.setFocusPainted(false);
         darkModeBtn.addActionListener(e -> switchToDarkMode(darkModeBtn.isSelected()));
-
         JButton log_outBtn = new JButton("log out");
         log_outBtn.setBackground(new Color(220, 53, 69));
         log_outBtn.setForeground(Color.WHITE);
@@ -71,12 +68,8 @@ public class HomePage extends JFrame {
     }
 
     private void logout() {
-        // Stop background threads first before login out
-        if (workoutPnl != null) {
-            workoutPnl.stopBackgroundRefresh();
-        }
+        if (workoutPnl != null) workoutPnl.stopBackgroundRefresh(); //stopping background threads
 
-        // then go to the log in page
         SwingUtilities.invokeLater(() -> {
             new LoginPage().setVisible(true);
             this.dispose();
