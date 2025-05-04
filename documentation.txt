@@ -1,0 +1,132 @@
+# Fitness Tracker Application Documentation
+
+## Overview
+The Fitness Tracker is a Java desktop application that allows users to track their workouts and monitor their fitness progress. The application provides a user-friendly interface for recording various types of workouts, viewing workout history, and tracking progress over time.
+
+## Features
+- User registration and login
+- Add, edit, and delete workouts
+- Filter workouts by date
+- View workout history in a table format
+- Track progress with statistics and charts
+- Automatic background refresh of workout data
+
+## System Requirements
+- Java Runtime Environment (JRE) 8 or higher
+- MySQL Database Server
+- Minimum 2GB RAM
+- 100MB free disk space
+
+## Installation
+1. Ensure Java is installed on your system
+2. Set up the MySQL database using the provided SQL script
+3. Configure the database connection in the application
+4. Run the application using the provided JAR file or through an IDE
+
+## Database Setup
+The application requires a MySQL database with the following tables:
+- users: Stores user account information
+- workouts: Stores workout data for all users
+
+Run the following SQL script to create the necessary tables:
+
+```sql
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE workouts (
+    workout_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    workout_type VARCHAR(50) NOT NULL,
+    duration INT NOT NULL,
+    calories INT NOT NULL,
+    sets INT NOT NULL,
+    reps INT NOT NULL,
+    workout_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+User Guide
+Login/Registration
+Launch the application
+Enter your email and password to log in
+If you're a new user, click "New User? Register" to create an account
+Adding a Workout
+After logging in, navigate to the Workout Panel
+Fill in the workout details:
+Workout Type (e.g., Running, Swimming, Weight Training)
+Duration (in minutes)
+Calories burned
+Sets (if applicable)
+Reps (if applicable)
+Click "Add Workout" to save the workout
+Viewing Workout History
+All your workouts are displayed in the table on the right side
+You can filter workouts by date using the date picker
+Click "Refresh" to manually update the workout list
+Editing a Workout
+Select a workout from the table
+The workout details will be loaded into the form
+Make your changes
+Click "Update Selected" to save the changes
+Deleting a Workout
+Select a workout from the table
+Click "Delete Selected"
+Confirm the deletion when prompted
+Developer Documentation
+Project Structure
+src/
+gui/: Contains all UI components
+LoginFrame.java: Login and registration screen
+MainFrame.java: Main application window
+WorkoutPanel.java: Panel for managing workouts
+ProgressPanel.java: Panel for displaying progress
+models/: Contains data models
+User.java: User account model
+Workout.java: Workout data model
+utils/: Utility classes
+DatabaseConnection.java: Database connection manager
+ColorTheme.java: UI color theme definitions
+Key Classes
+User
+Represents a user account with methods for authentication and registration.
+
+Workout
+Represents a workout entry with methods for CRUD operations.
+
+LoginFrame
+Handles user authentication and registration.
+
+MainFrame
+The main application window that contains the WorkoutPanel and ProgressPanel.
+
+WorkoutPanel
+Manages the workout entry form and workout history table.
+
+ProgressPanel
+Displays workout statistics and progress charts.
+
+Database Connection
+The application connects to the MySQL database using JDBC. The connection details are managed by the DatabaseConnection class.
+
+Troubleshooting
+Common Issues
+Cannot connect to database
+
+Verify database server is running
+Check connection settings in DatabaseConnection.java
+Ensure firewall is not blocking the connection
+Login fails
+
+Verify email and password are correct
+Check if the user account exists in the database
+Workout not saving
+
+Check database connection
+Verify all required fields are filled
+Check for any error messages in the console
