@@ -3,7 +3,6 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,13 +16,13 @@ import models.User;
 import models.Workout;
 import utils.ColorTheme;
 
-public class WorkoutPanel extends JPanel {
+public class Work_outPanel extends JPanel {
     private final User currentUser;
     private JTable workoutTable;
-    private DefaultTableModel tableModel;
-    private JTextField durationField;
-    private JTextField caloriesField;
-    private JTextField setsField;
+    private DefaultTableModel tableMdl;
+    private JTextField durationFld;
+    private JTextField caloriesFld;
+    private JTextField setsFld;
     private JTextField repsField;
     private JComboBox<String> workoutTypeCombo;
     private JButton addButton;
@@ -32,16 +31,15 @@ public class WorkoutPanel extends JPanel {
     private JButton refreshButton;
     private JDateChooser dateChooser;
     private ScheduledExecutorService scheduler;
-    private ProgressPanel progressPanel;
+    private ProgressPnl progressPnl;
     
-    // Workout types
     private final String[] workoutTypes = {
         "Running", "Walking", "Cycling", "Swimming", 
-        "Weight Training", "HIIT", "Yoga", "Pilates",
+        "Weight Training", "Yoga", "Pilates",
         "Basketball", "Football", "Tennis", "Other"
     };
     
-    public WorkoutPanel(User user) {
+    public Work_outPanel(User user) {
         this.currentUser = user;
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -77,24 +75,24 @@ public class WorkoutPanel extends JPanel {
         formPanel.add(new JLabel("Duration (mins):"), gbc);
         
         gbc.gridx = 1;
-        durationField = new JTextField(10);
-        formPanel.add(durationField, gbc);
+        durationFld = new JTextField(10);
+        formPanel.add(durationFld, gbc);
         
         // Calories
         gbc.gridx = 0; gbc.gridy = 2;
         formPanel.add(new JLabel("Calories:"), gbc);
         
         gbc.gridx = 1;
-        caloriesField = new JTextField(10);
-        formPanel.add(caloriesField, gbc);
+        caloriesFld = new JTextField(10);
+        formPanel.add(caloriesFld, gbc);
         
         // Sets
         gbc.gridx = 0; gbc.gridy = 3;
         formPanel.add(new JLabel("Sets:"), gbc);
         
         gbc.gridx = 1;
-        setsField = new JTextField(10);
-        formPanel.add(setsField, gbc);
+        setsFld = new JTextField(10);
+        formPanel.add(setsFld, gbc);
         
         // Reps
         gbc.gridx = 0; gbc.gridy = 4;
@@ -120,7 +118,7 @@ public class WorkoutPanel extends JPanel {
     private void createTablePanel() {
         // Create table model with columns
         String[] columns = {"ID", "Type", "Duration", "Calories", "Sets", "Reps", "Date"};
-        tableModel = new DefaultTableModel(columns, 0) {
+        tableMdl = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Make table non-editable
@@ -128,7 +126,7 @@ public class WorkoutPanel extends JPanel {
         };
         
         // Create table
-        workoutTable = new JTable(tableModel);
+        workoutTable = new JTable(tableMdl);
         workoutTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         workoutTable.getTableHeader().setReorderingAllowed(false);
         
@@ -204,9 +202,9 @@ public class WorkoutPanel extends JPanel {
             
             // Get values from form
             String workoutType = (String) workoutTypeCombo.getSelectedItem();
-            int duration = Integer.parseInt(durationField.getText());
-            int calories = Integer.parseInt(caloriesField.getText());
-            int sets = Integer.parseInt(setsField.getText());
+            int duration = Integer.parseInt(durationFld.getText());
+            int calories = Integer.parseInt(caloriesFld.getText());
+            int sets = Integer.parseInt(setsFld.getText());
             int reps = Integer.parseInt(repsField.getText());
             
             // Create and save workout
@@ -237,13 +235,13 @@ public class WorkoutPanel extends JPanel {
             }
             
             // Get workout ID from table
-            int workoutId = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+            int workoutId = Integer.parseInt(tableMdl.getValueAt(selectedRow, 0).toString());
             
             // Get values from form
             String workoutType = (String) workoutTypeCombo.getSelectedItem();
-            int duration = Integer.parseInt(durationField.getText());
-            int calories = Integer.parseInt(caloriesField.getText());
-            int sets = Integer.parseInt(setsField.getText());
+            int duration = Integer.parseInt(durationFld.getText());
+            int calories = Integer.parseInt(caloriesFld.getText());
+            int sets = Integer.parseInt(setsFld.getText());
             int reps = Integer.parseInt(repsField.getText());
             
             // Get all workouts to find the one to update
@@ -298,7 +296,7 @@ public class WorkoutPanel extends JPanel {
         }
         
         // Get workout ID from table
-        int workoutId = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+        int workoutId = Integer.parseInt(tableMdl.getValueAt(selectedRow, 0).toString());
         
         // Get all workouts to find the one to delete
         List<Workout> workouts = Workout.getUserWorkouts(currentUser.getUserId());
@@ -326,17 +324,17 @@ public class WorkoutPanel extends JPanel {
     
     private boolean validateInput() {
         // Check if fields are empty
-        if (durationField.getText().isEmpty() || caloriesField.getText().isEmpty() ||
-                setsField.getText().isEmpty() || repsField.getText().isEmpty()) {
+        if (durationFld.getText().isEmpty() || caloriesFld.getText().isEmpty() ||
+                setsFld.getText().isEmpty() || repsField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields", "Input Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         
         try {
             // Validate numeric fields
-            int duration = Integer.parseInt(durationField.getText());
-            int calories = Integer.parseInt(caloriesField.getText());
-            int sets = Integer.parseInt(setsField.getText());
+            int duration = Integer.parseInt(durationFld.getText());
+            int calories = Integer.parseInt(caloriesFld.getText());
+            int sets = Integer.parseInt(setsFld.getText());
             int reps = Integer.parseInt(repsField.getText());
             
             // Check for negative values
@@ -354,25 +352,25 @@ public class WorkoutPanel extends JPanel {
     
     private void populateFormFromTable(int row) {
         // Get values from table
-        String workoutType = tableModel.getValueAt(row, 1).toString();
-        String duration = tableModel.getValueAt(row, 2).toString();
-        String calories = tableModel.getValueAt(row, 3).toString();
-        String sets = tableModel.getValueAt(row, 4).toString();
-        String reps = tableModel.getValueAt(row, 5).toString();
+        String workoutType = tableMdl.getValueAt(row, 1).toString();
+        String duration = tableMdl.getValueAt(row, 2).toString();
+        String calories = tableMdl.getValueAt(row, 3).toString();
+        String sets = tableMdl.getValueAt(row, 4).toString();
+        String reps = tableMdl.getValueAt(row, 5).toString();
         
         // Set values in form
         workoutTypeCombo.setSelectedItem(workoutType);
-        durationField.setText(duration);
-        caloriesField.setText(calories);
-        setsField.setText(sets);
+        durationFld.setText(duration);
+        caloriesFld.setText(calories);
+        setsFld.setText(sets);
         repsField.setText(reps);
     }
     
     private void clearForm() {
         workoutTypeCombo.setSelectedIndex(0);
-        durationField.setText("");
-        caloriesField.setText("");
-        setsField.setText("");
+        durationFld.setText("");
+        caloriesFld.setText("");
+        setsFld.setText("");
         repsField.setText("");
         workoutTable.clearSelection();
         editButton.setEnabled(false);
@@ -381,7 +379,7 @@ public class WorkoutPanel extends JPanel {
     
     public void refreshWorkouts() {
         // Clear table
-        tableModel.setRowCount(0);
+        tableMdl.setRowCount(0);
         
         // Get date from date chooser
         java.util.Date selectedDate = dateChooser.getDate();
@@ -410,7 +408,7 @@ public class WorkoutPanel extends JPanel {
                 workout.getReps(),
                 dateFormat.format(workout.getWorkoutDate())
             };
-            tableModel.addRow(row);
+            tableMdl.addRow(row);
         }
     }
     
@@ -436,17 +434,17 @@ public class WorkoutPanel extends JPanel {
     }
     
     private void updateProgressPanel() {
-        // Find the parent MainFrame
+        // Find the parent HomePage
         Container parent = getParent();
-        while (parent != null && !(parent instanceof MainFrame)) {
+        while (parent != null && !(parent instanceof HomePage)) {
             parent = parent.getParent();
         }
         
-        if (parent instanceof MainFrame) {
-            MainFrame mainFrame = (MainFrame) parent;
+        if (parent instanceof HomePage) {
+            HomePage homePage = (HomePage) parent;
             // Get the progress panel and update it
-            if (mainFrame.progressPanel != null) {
-                mainFrame.progressPanel.updateStats();
+            if (homePage.progress_Pnl != null) {
+                homePage.progress_Pnl.updateStats();
             }
         }
     }
@@ -632,42 +630,42 @@ class ButtonsRenderer extends JPanel implements TableCellRenderer {
         }
         return this;
     }
-    private JButton editButton;
-    private JButton deleteButton;
+    private JButton editBtn;
+    private JButton deleteBtn;
     
     public ButtonsRenderer() {
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
         setOpaque(true);
         
-        editButton = new JButton("Edit");
-        editButton.setBackground(new Color(255, 140, 0)); // Darker orange
-        editButton.setForeground(Color.WHITE);
-        editButton.setFont(new Font("Arial", Font.BOLD, 10));
-        editButton.setFocusPainted(false);
+        editBtn = new JButton("Edit");
+        editBtn.setBackground(new Color(255, 140, 0)); // Darker orange
+        editBtn.setForeground(Color.WHITE);
+        editBtn.setFont(new Font("Georgia", Font.BOLD, 10));
+        editBtn.setFocusPainted(false);
         
-        deleteButton = new JButton("Delete");
-        deleteButton.setBackground(new Color(220, 53, 69)); // Keep red for delete
-        deleteButton.setForeground(Color.WHITE);
-        deleteButton.setFont(new Font("Arial", Font.BOLD, 10));
-        deleteButton.setFocusPainted(false);
+        deleteBtn = new JButton("Delete");
+        deleteBtn.setBackground(new Color(220, 53, 69)); // Keep red for delete
+        deleteBtn.setForeground(Color.WHITE);
+        deleteBtn.setFont(new Font("georgia", Font.BOLD, 10));
+        deleteBtn.setFocusPainted(false);
         
-        add(editButton);
-        add(deleteButton);
+        add(editBtn);
+        add(deleteBtn);
     }
     
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == editButton) {
-            editButton.setBackground(new Color(255, 140, 0));
-            editButton.setForeground(Color.WHITE);
-            editButton.setFont(new Font("Arial", Font.BOLD, 10));
-            editButton.setFocusPainted(false);
+        if (e.getSource() == editBtn) {
+            editBtn.setBackground(new Color(255, 140, 0));
+            editBtn.setForeground(Color.WHITE);
+            editBtn.setFont(new Font("Arial", Font.BOLD, 10));
+            editBtn.setFocusPainted(false);
         }
         
-        if (e.getSource() == deleteButton) {
-            deleteButton.setBackground(new Color(220, 53, 69));
-            deleteButton.setForeground(Color.WHITE);
-            deleteButton.setFont(new Font("Arial", Font.BOLD, 10));
-            deleteButton.setFocusPainted(false);
+        if (e.getSource() == deleteBtn) {
+            deleteBtn.setBackground(new Color(220, 53, 69));
+            deleteBtn.setForeground(Color.WHITE);
+            deleteBtn.setFont(new Font("Georgia", Font.BOLD, 10));
+            deleteBtn.setFocusPainted(false);
         }
     }
 }

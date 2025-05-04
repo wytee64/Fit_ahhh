@@ -2,11 +2,11 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Scanner;
+
 import models.User;
 
 
-public class LoginFrame extends JFrame {
+public class LoginPage extends JFrame {
     private JTextField emailField;
     private JPasswordField passwordField;
     private JTextField nameField;
@@ -15,7 +15,7 @@ public class LoginFrame extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
 
-    public LoginFrame() {
+    public LoginPage() {
         setTitle("Fitness track Ahhh");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
@@ -148,14 +148,14 @@ public class LoginFrame extends JFrame {
 
     private void openMainApplication(User user) {
         // creatin and showing main app window
-        MainFrame mainFrame = new MainFrame(user);
-        mainFrame.setVisible(true);
+        HomePage homePage = new HomePage(user);
+        homePage.setVisible(true);
         this.dispose();
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new LoginFrame().setVisible(true);
+            new LoginPage().setVisible(true);
         });
     }
 }

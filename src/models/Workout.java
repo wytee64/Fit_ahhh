@@ -35,14 +35,15 @@ public class Workout implements Serializable {
     public int getDuration() { return duration; }
     public int getCalories() { return calories; }
     public void setCalories(int calories) { this.calories = calories; }
+    public void setDuration(int duration) { this.duration = duration; }
+    public void setWorkoutType(String workoutType) { this.workoutType = workoutType; }
     public int getSets() { return sets; }
     public void setSets(int sets) { this.sets = sets; }
     public int getReps() { return reps; }
     public void setReps(int reps) { this.reps = reps; }
     public Timestamp getWorkoutDate() { return workoutDate; }
-    public void setDuration(int duration) { this.duration = duration; }
-    public void setWorkoutType(String workoutType) { this.workoutType = workoutType; }
 
+    // Database operations
     public boolean save() {
         String sql = "INSERT INTO Workouts (user_id, workout_type, duration, calories, sets, reps) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
