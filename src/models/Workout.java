@@ -40,9 +40,8 @@ public class Workout {
     public Timestamp getWorkoutDate() { return workoutDate; }
 
     public boolean saveWorkout() {
-        String sql = "INSERT INTO Workouts (user_id, workout_type, duration, calories, sets, reps) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Workouts (user_id, workout_type, duration, calories, sets, reps) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, userId);
             pstmt.setString(2, workoutType);
             pstmt.setInt(3, duration);
@@ -66,11 +65,9 @@ public class Workout {
         }
     }
 
-    // Delete method
     public boolean deleteWorkout() {
-        String sql = "DELETE FROM Workouts WHERE workout_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Workouts WHERE workout_id = ?")) {
             pstmt.setInt(1, workoutId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -79,11 +76,9 @@ public class Workout {
         }
     }
 
-    // Update method for editing workouts
     public boolean updateWorkout() {
-        String sql = "UPDATE Workouts SET workout_type = ?, duration = ?, calories = ?, sets = ?, reps = ? WHERE workout_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement("UPDATE Workouts SET workout_type = ?, duration = ?, calories = ?, sets = ?, reps = ? WHERE workout_id = ?")) {
             pstmt.setString(1, workoutType);
             pstmt.setInt(2, duration);
             pstmt.setInt(3, calories);
@@ -98,61 +93,43 @@ public class Workout {
     }
 
     public static List<Workout> getUserWorkouts(int userId) {
-        List<Workout> workouts = new ArrayList<>();
-        String sql = "SELECT * FROM Workouts WHERE user_id = ? ORDER BY workout_date DESC";
-        
+        List<Workout> workoutsArraylist = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Workouts WHERE user_id = ? ORDER BY workout_date DESC")) {
             pstmt.setInt(1, userId);
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Workout workout = new Workout(
-                        rs.getInt("user_id"),
-                        rs.getString("workout_type"),
-                        rs.getInt("duration"),
-                        rs.getInt("calories"),
-                        rs.getInt("sets"),
-                        rs.getInt("reps")
-                    );
+                    Workout workout = new Workout(rs.getInt("user_id"), rs.getString("workout_type"), rs.getInt("duration"), rs.getInt("calories"), rs.getInt("sets"), rs.getInt("reps"));
                     workout.workoutId = rs.getInt("workout_id");
                     workout.workoutDate = rs.getTimestamp("workout_date");
-                    workouts.add(workout);
+                    workoutsArraylist.add(workout);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return workouts;
+        return workoutsArraylist;
     }
     
-    public static List<Workout> getUserWorkoutsForSpecificDate(int userId, Date date) {
-        List<Workout> workouts = new ArrayList<>();
-        String sql = "SELECT * FROM Workouts WHERE user_id = ? AND DATE(workout_date) = ? ORDER BY workout_date DESC";
-        
+    public static List<Workout> getAllTheWorkoutsForSpecificDate(int userId, Date date) {
+        List<Workout> workoutsArraylist = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Workouts WHERE user_id = ? AND DATE(workout_date) = ? ORDER BY workout_date DESC")) {
             pstmt.setInt(1, userId);
             pstmt.setDate(2, date);
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Workout workout = new Workout(
-                        rs.getInt("user_id"),
-                        rs.getString("workout_type"),
-                        rs.getInt("duration"),
-                        rs.getInt("calories"),
-                        rs.getInt("sets"),
-                        rs.getInt("reps")
-                    );
+                    Workout workout = new Workout(rs.getInt("user_id"), rs.getString("workout_type"), rs.getInt("duration"), rs.getInt("calories"), rs.getInt("sets"), rs.getInt("reps"));
                     workout.workoutId = rs.getInt("workout_id");
                     workout.workoutDate = rs.getTimestamp("workout_date");
-                    workouts.add(workout);
+                    workoutsArraylist.add(workout);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return workouts;
+        return workoutsArraylist;
     }
 }

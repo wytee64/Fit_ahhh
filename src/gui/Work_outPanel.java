@@ -3,7 +3,6 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,74 +22,72 @@ public class Work_outPanel extends JPanel {
     private JTextField durationFld;
     private JTextField caloriesFld;
     private JTextField setsFld;
-    private JTextField repsField;
+    private JTextField repsFld;
     private JComboBox<String> workoutTypeCombo;
-    private JButton addButton;
-    private JButton editButton;
-    private JButton deleteButton;
-    private JButton refreshButton;
+    private JButton addBtn;
+    private JButton editBtn;
+    private JButton deleteBtn;
+    private JButton refreshBtn;
     private JDateChooser dateChooser;
     private ScheduledExecutorService scheduler;
 
-    private final String[] workoutTypes = {"Running", "Walking", "Cycling", "Swimming", "Weight Training", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "Other"};
-    
+    private final String[] TypesofWorkouts = {"Running", "Walking", "Cycling", "Swimming", "Weight Training", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "Other"};
+
     public Work_outPanel(User user) {
         this.currentUser = user;
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
-        createFormPanel();
-        createTablePanel();
-        createButtonPanel();
+        setBackground(new Color(254, 243, 245));
+        // create and start these
+        createFormPnl();
+        createTablePnl();
+        createButtonPnl();
         startBackgroundRefresh();
     }
-    
-    private void createFormPanel() {
+    private void createFormPnl() {
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2), "Add Workout", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 16), new Color(220, 80, 20)));
         formPanel.setBackground(new Color(255, 248, 240));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(new JLabel("Workout Type:"), gbc);
-        
         gbc.gridx = 1;
-        workoutTypeCombo = new JComboBox<>(workoutTypes);
+        workoutTypeCombo = new JComboBox<>(TypesofWorkouts);
         formPanel.add(workoutTypeCombo, gbc);
-        
+
         gbc.gridx = 0; gbc.gridy = 1;
         formPanel.add(new JLabel("Duration (mins):"), gbc);
-        
+
         gbc.gridx = 1;
         durationFld = new JTextField(10);
         formPanel.add(durationFld, gbc);
-        
+
         gbc.gridx = 0; gbc.gridy = 2;
         formPanel.add(new JLabel("Calories:"), gbc);
-        
+
         gbc.gridx = 1;
         caloriesFld = new JTextField(10);
         formPanel.add(caloriesFld, gbc);
-        
+
         gbc.gridx = 0; gbc.gridy = 3;
         formPanel.add(new JLabel("Sets:"), gbc);
-        
+
         gbc.gridx = 1;
         setsFld = new JTextField(10);
         formPanel.add(setsFld, gbc);
-        
+
         gbc.gridx = 0; gbc.gridy = 4;
         formPanel.add(new JLabel("Reps:"), gbc);
-        
+
         gbc.gridx = 1;
-        repsField = new JTextField(10);
-        formPanel.add(repsField, gbc);
+        repsFld = new JTextField(10);
+        formPanel.add(repsFld, gbc);
 
         gbc.gridx = 0; gbc.gridy = 5;
         formPanel.add(new JLabel("Filter by Date:"), gbc);
-        
+
         gbc.gridx = 1;
         dateChooser = new JDateChooser();
         dateChooser.setDate(new java.util.Date());
@@ -98,38 +95,33 @@ public class Work_outPanel extends JPanel {
         add(formPanel, BorderLayout.WEST);
     }
     
-    private void createTablePanel() {
-        // Create table model with columns
+    private void createTablePnl() {
         String[] columns = {"ID", "Type", "Duration", "Calories", "Sets", "Reps", "Date"};
         tableMdl = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Make table non-editable
+                return false;
             }
         };
-
-        // Create table
         workoutTable = new JTable(tableMdl);
         workoutTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         workoutTable.getTableHeader().setReorderingAllowed(false);
         
-        // Add selection listener
         workoutTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = workoutTable.getSelectedRow();
                 if (selectedRow != -1) {
                     populateFormFromTable(selectedRow);
-                    editButton.setEnabled(true);
-                    deleteButton.setEnabled(true);
+                    editBtn.setEnabled(true);
+                    deleteBtn.setEnabled(true);
                 } else {
-                    clearForm();
-                    editButton.setEnabled(false);
-                    deleteButton.setEnabled(false);
+                    clearTheFormFields();
+                    editBtn.setEnabled(false);
+                    deleteBtn.setEnabled(false);
                 }
             }
         });
         
-        // Add table to scroll pane
         JScrollPane scrollPane = new JScrollPane(workoutTable);
         scrollPane.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(new Color(220, 80, 20), 2),
@@ -139,77 +131,67 @@ public class Work_outPanel extends JPanel {
                 new Font("Arial", Font.BOLD, 16),
                 new Color(220, 80, 20)));
         
-        // Add scroll pane to the main panel
         add(scrollPane, BorderLayout.CENTER);
     }
     
-    private void createButtonPanel() {
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buttonPanel.setBackground(new Color(255, 248, 240));
+    private void createButtonPnl() {
+        JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        btnPnl.setBackground(new Color(255, 248, 240));
         
-        // Add button
-        addButton = new JButton("Add Workout");
-        addButton.setBackground(new Color(220, 80, 20)); // PRIMARY color
-        addButton.setForeground(Color.WHITE);
-        addButton.setFont(new Font("Georgia", Font.BOLD, 12));
-        addButton.setFocusPainted(false);
-        addButton.addActionListener(e -> handleAddWorkout());
+        addBtn = new JButton("Add Workout");
+        addBtn.setBackground(new Color(220, 80, 20)); // PRIMARY color
+        addBtn.setForeground(Color.WHITE);
+        addBtn.setFont(new Font("Georgia", Font.BOLD, 12));
+        addBtn.setFocusPainted(false);
+        addBtn.addActionListener(e -> addWorkout());
         
-        // Edit button
-        editButton = new JButton("Update Selected");
-        editButton.setBackground(new Color(220, 80, 20)); // PRIMARY color
-        editButton.setForeground(Color.WHITE);
-        editButton.setFont(new Font("Georgia", Font.BOLD, 12));
-        editButton.setFocusPainted(false);
-        editButton.setEnabled(false);
-        editButton.addActionListener(e -> handleEditWorkout());
+        editBtn = new JButton("Update Selected");
+        editBtn.setBackground(new Color(220, 80, 20)); // PRIMARY color
+        editBtn.setForeground(Color.WHITE);
+        editBtn.setFont(new Font("Georgia", Font.BOLD, 12));
+        editBtn.setFocusPainted(false);
+        editBtn.setEnabled(false);
+        editBtn.addActionListener(e -> handleEditWorkout());
         
-        // Delete button
-        deleteButton = new JButton("Delete Selected");
-        deleteButton.setBackground(new Color(220, 53, 69));
-        deleteButton.setForeground(Color.WHITE);
-        deleteButton.setFont(new Font("Georgia", Font.BOLD, 12));
-        deleteButton.setFocusPainted(false);
-        deleteButton.setEnabled(false);
-        deleteButton.addActionListener(e -> handleDeleteWorkout());
+        deleteBtn = new JButton("Delete Selected");
+        deleteBtn.setBackground(new Color(220, 53, 69));
+        deleteBtn.setForeground(Color.WHITE);
+        deleteBtn.setFont(new Font("Georgia", Font.BOLD, 12));
+        deleteBtn.setFocusPainted(false);
+        deleteBtn.setEnabled(false);
+        deleteBtn.addActionListener(e -> handleDeleteWorkout());
         
-        // Refresh button
-        refreshButton = new JButton("Refresh");
-        refreshButton.setBackground(new Color(255, 140, 0)); // SECONDARY button color
-        refreshButton.setForeground(Color.WHITE);
-        refreshButton.setFont(new Font("Arial", Font.BOLD, 12));
-        refreshButton.setFocusPainted(false);
-        refreshButton.addActionListener(e -> refreshWorkouts());
+        refreshBtn = new JButton("Refresh");
+        refreshBtn.setBackground(new Color(255, 140, 0)); // SECONDARY button color
+        refreshBtn.setForeground(Color.WHITE);
+        refreshBtn.setFont(new Font("Arial", Font.BOLD, 12));
+        refreshBtn.setFocusPainted(false);
+        refreshBtn.addActionListener(e -> refreshWorkouts());
         
-        // Add buttons to panel
-        buttonPanel.add(addButton);
-        buttonPanel.add(editButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(refreshButton);
+        btnPnl.add(addBtn);
+        btnPnl.add(editBtn);
+        btnPnl.add(deleteBtn);
+        btnPnl.add(refreshBtn);
         
-        // Add button panel to the main panel
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(btnPnl, BorderLayout.SOUTH);
     }
     
-    private void handleAddWorkout() {
+    private void addWorkout() {
         try {
-            // Validate input
             if (!validateInput()) {
                 return;
             }
             
-            // Get values from form
             String workoutType = (String) workoutTypeCombo.getSelectedItem();
             int duration = Integer.parseInt(durationFld.getText());
             int calories = Integer.parseInt(caloriesFld.getText());
             int sets = Integer.parseInt(setsFld.getText());
-            int reps = Integer.parseInt(repsField.getText());
+            int reps = Integer.parseInt(repsFld.getText());
             
-            // Create and save workout
             Workout workout = new Workout(currentUser.getUserId(), workoutType, duration, calories, sets, reps);
             if (workout.saveWorkout()) {
                 JOptionPane.showMessageDialog(this, "Workout added successfully!");
-                clearForm();
+                clearTheFormFields();
                 refreshWorkouts();
                 updateProgressPanel();
             } else {
@@ -240,7 +222,7 @@ public class Work_outPanel extends JPanel {
             int duration = Integer.parseInt(durationFld.getText());
             int calories = Integer.parseInt(caloriesFld.getText());
             int sets = Integer.parseInt(setsFld.getText());
-            int reps = Integer.parseInt(repsField.getText());
+            int reps = Integer.parseInt(repsFld.getText());
             
             // Get all workouts to find the one to update
             List<Workout> workouts = Workout.getUserWorkouts(currentUser.getUserId());
@@ -264,7 +246,7 @@ public class Work_outPanel extends JPanel {
                 // Save changes
                 if (workoutToUpdate.updateWorkout()) {
                     JOptionPane.showMessageDialog(this, "Workout updated successfully!");
-                    clearForm();
+                    clearTheFormFields();
                     refreshWorkouts();
                     updateProgressPanel();
                 } else {
@@ -311,7 +293,7 @@ public class Work_outPanel extends JPanel {
             // Delete workout
             if (workoutToDelete.deleteWorkout()) {
                 JOptionPane.showMessageDialog(this, "Workout deleted successfully!");
-                clearForm();
+                clearTheFormFields();
                 refreshWorkouts();
                 updateProgressPanel();
             } else {
@@ -321,27 +303,23 @@ public class Work_outPanel extends JPanel {
     }
     
     private boolean validateInput() {
-        // Check if fields are empty
-        if (durationFld.getText().isEmpty() || caloriesFld.getText().isEmpty() ||
-                setsFld.getText().isEmpty() || repsField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields", "Input Error", JOptionPane.ERROR_MESSAGE);
+        if (durationFld.getText().isEmpty() || caloriesFld.getText().isEmpty() || setsFld.getText().isEmpty() || repsFld.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "fill in all fields", "error with form commpletion", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         
         try {
-            // Validate numeric fields
             int duration = Integer.parseInt(durationFld.getText());
             int calories = Integer.parseInt(caloriesFld.getText());
             int sets = Integer.parseInt(setsFld.getText());
-            int reps = Integer.parseInt(repsField.getText());
+            int reps = Integer.parseInt(repsFld.getText());
             
-            // Check for negative values
             if (duration <= 0 || calories < 0 || sets <= 0 || reps <= 0) {
-                JOptionPane.showMessageDialog(this, "Please enter positive values", "Input Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "values cannot be negative", "error with form commpletion", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter valid numbers", "Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "enter positive numbers only", "error with form commpletion", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         
@@ -349,75 +327,60 @@ public class Work_outPanel extends JPanel {
     }
     
     private void populateFormFromTable(int row) {
-        // Get values from table
+        //this moves the data from the table to the form to be edited or deleted
         String workoutType = tableMdl.getValueAt(row, 1).toString();
         String duration = tableMdl.getValueAt(row, 2).toString();
         String calories = tableMdl.getValueAt(row, 3).toString();
         String sets = tableMdl.getValueAt(row, 4).toString();
         String reps = tableMdl.getValueAt(row, 5).toString();
         
-        // Set values in form
         workoutTypeCombo.setSelectedItem(workoutType);
         durationFld.setText(duration);
         caloriesFld.setText(calories);
         setsFld.setText(sets);
-        repsField.setText(reps);
+        repsFld.setText(reps);
     }
     
-    private void clearForm() {
+    private void clearTheFormFields() {
         workoutTypeCombo.setSelectedIndex(0);
         durationFld.setText("");
         caloriesFld.setText("");
         setsFld.setText("");
-        repsField.setText("");
+        repsFld.setText("");
         workoutTable.clearSelection();
-        editButton.setEnabled(false);
-        deleteButton.setEnabled(false);
+        editBtn.setEnabled(false);
+        deleteBtn.setEnabled(false);
     }
     
     public void refreshWorkouts() {
-        // Clear table
         tableMdl.setRowCount(0);
         
-        // Get date from date chooser
         java.util.Date selectedDate = dateChooser.getDate();
         List<Workout> workouts;
         
         if (selectedDate != null) {
-            // Get workouts for selected date
+
             Date sqlDate = new Date(selectedDate.getTime());
-            workouts = Workout.getUserWorkoutsForSpecificDate(currentUser.getUserId(), sqlDate);
+            workouts = Workout.getAllTheWorkoutsForSpecificDate(currentUser.getUserId(), sqlDate);
         } else {
-            // Get all workouts
+            //gets all dates
             workouts = Workout.getUserWorkouts(currentUser.getUserId());
         }
         
-        // Format for displaying date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         
-        // Add workouts to table
         for (Workout workout : workouts) {
-            Object[] row = {
-                workout.getWorkoutId(),
-                workout.getWorkoutType(),
-                workout.getDuration(),
-                workout.getCalories(),
-                workout.getSets(),
-                workout.getReps(),
-                dateFormat.format(workout.getWorkoutDate())
-            };
+            Object[] row = {workout.getWorkoutId(), workout.getWorkoutType(), workout.getDuration(), workout.getCalories(), workout.getSets(), workout.getReps(), dateFormat.format(workout.getWorkoutDate())};
             tableMdl.addRow(row);
         }
     }
     
     public void startBackgroundRefresh() {
-        // Create scheduler for background refresh
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(this::refreshWorkouts, 0, 30, TimeUnit.SECONDS);
     }
     
     public void stopBackgroundRefresh() {
-        // Shutdown scheduler
         if (scheduler != null && !scheduler.isShutdown()) {
             scheduler.shutdown();
             try {
@@ -432,7 +395,6 @@ public class Work_outPanel extends JPanel {
     }
     
     private void updateProgressPanel() {
-        // find the parent HomePage
         Container parent = getParent();
         while (parent != null && !(parent instanceof HomePage)) {
             parent = parent.getParent();
@@ -440,14 +402,13 @@ public class Work_outPanel extends JPanel {
         
         if (parent instanceof HomePage) {
             HomePage homePage = (HomePage) parent;
-            // get the progress panel and update it
+            // gets the progress pnl and updates it
             if (homePage.progress_Pnl != null) {
                 homePage.progress_Pnl.updateStats();
             }
         }
     }
     
-    // Inner class for date chooser
     private static class JDateChooser extends JPanel {
         private final JTextField dateField;
         private final JButton dateButton;
@@ -472,11 +433,11 @@ public class Work_outPanel extends JPanel {
                     dialog.setTitle("Select Date");
                     dialog.setModal(true);
                     
-                    JPanel panel = new JPanel(new BorderLayout());
+                    JPanel pnl = new JPanel(new BorderLayout());
                     JCalendar calendar = new JCalendar();
                     
-                    JButton okButton = new JButton("OK");
-                    okButton.addActionListener(new ActionListener() {
+                    JButton okBtn = new JButton("OK");
+                    okBtn.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             setDate(calendar.getDate());
@@ -484,10 +445,10 @@ public class Work_outPanel extends JPanel {
                         }
                     });
                     
-                    panel.add(calendar, BorderLayout.CENTER);
-                    panel.add(okButton, BorderLayout.SOUTH);
+                    pnl.add(calendar, BorderLayout.CENTER);
+                    pnl.add(okBtn, BorderLayout.SOUTH);
                     
-                    dialog.setContentPane(panel);
+                    dialog.setContentPane(pnl);
                     dialog.pack();
                     dialog.setLocationRelativeTo(JDateChooser.this);
                     dialog.setVisible(true);
@@ -511,9 +472,9 @@ public class Work_outPanel extends JPanel {
         private final JSpinner yearSpinner;
         private final JPanel daysPanel;
         private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-        private int selectedDay = 1;
-        private int selectedMonth = 0;
-        private int selectedYear = 2023;
+        private int selectedDay;
+        private int selectedMonth;
+        private int selectedYear;
         
         public JCalendar() {
             setLayout(new BorderLayout());
@@ -551,14 +512,12 @@ public class Work_outPanel extends JPanel {
                 daysPanel.add(dayLabel);
             }
             
-            // Get first day of month and number of days
             java.util.Calendar cal = java.util.Calendar.getInstance();
             cal.set(selectedYear, selectedMonth, 1);
             
             int firstDayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK) - 1;
             int daysInMonth = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
             
-            // Add empty cells for days before first day of month
             for (int i = 0; i < firstDayOfWeek; i++) {
                 daysPanel.add(new JLabel(""));
             }
@@ -570,7 +529,6 @@ public class Work_outPanel extends JPanel {
                     selectedDay = currentDay;
                     updateCalendar();
                 });
-                // Highlight selected day
                 if (day == selectedDay) dayButton.setBackground(new Color(135, 206, 250));
                 daysPanel.add(dayButton);
             }
