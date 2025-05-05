@@ -31,44 +31,28 @@ public class Work_outPanel extends JPanel {
     private JButton refreshButton;
     private JDateChooser dateChooser;
     private ScheduledExecutorService scheduler;
-    private ProgressPnl progressPnl;
-    
-    private final String[] workoutTypes = {
-        "Running", "Walking", "Cycling", "Swimming", 
-        "Weight Training", "Yoga", "Pilates",
-        "Basketball", "Football", "Tennis", "Other"
-    };
+
+    private final String[] workoutTypes = {"Running", "Walking", "Cycling", "Swimming", "Weight Training", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "Other"};
     
     public Work_outPanel(User user) {
         this.currentUser = user;
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        // Create components
         createFormPanel();
         createTablePanel();
         createButtonPanel();
-        
-        // Start background refresh
         startBackgroundRefresh();
     }
     
     private void createFormPanel() {
         JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(220, 80, 20), 2),
-                "Add Workout",
-                TitledBorder.CENTER,
-                TitledBorder.TOP,
-                new Font("Arial", Font.BOLD, 16),
-                new Color(220, 80, 20)));
+        formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2), "Add Workout", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 16), new Color(220, 80, 20)));
         formPanel.setBackground(new Color(255, 248, 240));
-        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        // Workout Type
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(new JLabel("Workout Type:"), gbc);
         
@@ -76,7 +60,6 @@ public class Work_outPanel extends JPanel {
         workoutTypeCombo = new JComboBox<>(workoutTypes);
         formPanel.add(workoutTypeCombo, gbc);
         
-        // Duration
         gbc.gridx = 0; gbc.gridy = 1;
         formPanel.add(new JLabel("Duration (mins):"), gbc);
         
@@ -84,7 +67,6 @@ public class Work_outPanel extends JPanel {
         durationFld = new JTextField(10);
         formPanel.add(durationFld, gbc);
         
-        // Calories
         gbc.gridx = 0; gbc.gridy = 2;
         formPanel.add(new JLabel("Calories:"), gbc);
         
@@ -92,7 +74,6 @@ public class Work_outPanel extends JPanel {
         caloriesFld = new JTextField(10);
         formPanel.add(caloriesFld, gbc);
         
-        // Sets
         gbc.gridx = 0; gbc.gridy = 3;
         formPanel.add(new JLabel("Sets:"), gbc);
         
@@ -100,15 +81,13 @@ public class Work_outPanel extends JPanel {
         setsFld = new JTextField(10);
         formPanel.add(setsFld, gbc);
         
-        // Reps
         gbc.gridx = 0; gbc.gridy = 4;
         formPanel.add(new JLabel("Reps:"), gbc);
         
         gbc.gridx = 1;
         repsField = new JTextField(10);
         formPanel.add(repsField, gbc);
-        
-        // Date chooser
+
         gbc.gridx = 0; gbc.gridy = 5;
         formPanel.add(new JLabel("Filter by Date:"), gbc);
         
@@ -116,8 +95,6 @@ public class Work_outPanel extends JPanel {
         dateChooser = new JDateChooser();
         dateChooser.setDate(new java.util.Date());
         formPanel.add(dateChooser, gbc);
-        
-        // Add form panel to the main panel
         add(formPanel, BorderLayout.WEST);
     }
     
@@ -130,7 +107,7 @@ public class Work_outPanel extends JPanel {
                 return false; // Make table non-editable
             }
         };
-        
+
         // Create table
         workoutTable = new JTable(tableMdl);
         workoutTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -230,7 +207,7 @@ public class Work_outPanel extends JPanel {
             
             // Create and save workout
             Workout workout = new Workout(currentUser.getUserId(), workoutType, duration, calories, sets, reps);
-            if (workout.save()) {
+            if (workout.saveWorkout()) {
                 JOptionPane.showMessageDialog(this, "Workout added successfully!");
                 clearForm();
                 refreshWorkouts();
@@ -285,7 +262,7 @@ public class Work_outPanel extends JPanel {
                 workoutToUpdate.setReps(reps);
                 
                 // Save changes
-                if (workoutToUpdate.update()) {
+                if (workoutToUpdate.updateWorkout()) {
                     JOptionPane.showMessageDialog(this, "Workout updated successfully!");
                     clearForm();
                     refreshWorkouts();
@@ -332,7 +309,7 @@ public class Work_outPanel extends JPanel {
         
         if (workoutToDelete != null) {
             // Delete workout
-            if (workoutToDelete.delete()) {
+            if (workoutToDelete.deleteWorkout()) {
                 JOptionPane.showMessageDialog(this, "Workout deleted successfully!");
                 clearForm();
                 refreshWorkouts();
@@ -409,7 +386,7 @@ public class Work_outPanel extends JPanel {
         if (selectedDate != null) {
             // Get workouts for selected date
             Date sqlDate = new Date(selectedDate.getTime());
-            workouts = Workout.getUserWorkoutsByDate(currentUser.getUserId(), sqlDate);
+            workouts = Workout.getUserWorkoutsForSpecificDate(currentUser.getUserId(), sqlDate);
         } else {
             // Get all workouts
             workouts = Workout.getUserWorkouts(currentUser.getUserId());
@@ -455,7 +432,7 @@ public class Work_outPanel extends JPanel {
     }
     
     private void updateProgressPanel() {
-        // Find the parent HomePage
+        // find the parent HomePage
         Container parent = getParent();
         while (parent != null && !(parent instanceof HomePage)) {
             parent = parent.getParent();
@@ -463,7 +440,7 @@ public class Work_outPanel extends JPanel {
         
         if (parent instanceof HomePage) {
             HomePage homePage = (HomePage) parent;
-            // Get the progress panel and update it
+            // get the progress panel and update it
             if (homePage.progress_Pnl != null) {
                 homePage.progress_Pnl.updateStats();
             }
@@ -529,68 +506,45 @@ public class Work_outPanel extends JPanel {
         }
     }
     
-    // Simple calendar component
     private static class JCalendar extends JPanel {
         private final JComboBox<String> monthCombo;
         private final JSpinner yearSpinner;
         private final JPanel daysPanel;
-        private final String[] months = {"January", "February", "March", "April", "May", "June", 
-                                         "July", "August", "September", "October", "November", "December"};
+        private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         private int selectedDay = 1;
         private int selectedMonth = 0;
         private int selectedYear = 2023;
         
         public JCalendar() {
             setLayout(new BorderLayout());
-            
-            // Header panel with month and year selectors
             JPanel headerPanel = new JPanel(new FlowLayout());
-            
             monthCombo = new JComboBox<>(months);
             yearSpinner = new JSpinner(new SpinnerNumberModel(2023, 1900, 2100, 1));
-            
             headerPanel.add(monthCombo);
             headerPanel.add(yearSpinner);
-            
-            // Days panel
             daysPanel = new JPanel(new GridLayout(0, 7));
-            
-            // Add day labels
             String[] dayLabels = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
             for (String label : dayLabels) {
                 JLabel dayLabel = new JLabel(label, SwingConstants.CENTER);
                 daysPanel.add(dayLabel);
             }
-            
-            // Set current date
             java.util.Calendar cal = java.util.Calendar.getInstance();
             selectedDay = cal.get(java.util.Calendar.DAY_OF_MONTH);
             selectedMonth = cal.get(java.util.Calendar.MONTH);
             selectedYear = cal.get(java.util.Calendar.YEAR);
-            
             monthCombo.setSelectedIndex(selectedMonth);
             yearSpinner.setValue(selectedYear);
-            
-            // Add listeners
             monthCombo.addActionListener(e -> updateCalendar());
             yearSpinner.addChangeListener(e -> updateCalendar());
-            
-            // Add panels to main panel
             add(headerPanel, BorderLayout.NORTH);
             add(daysPanel, BorderLayout.CENTER);
-            
-            // Initial update
             updateCalendar();
         }
         
         private void updateCalendar() {
             selectedMonth = monthCombo.getSelectedIndex();
             selectedYear = (int) yearSpinner.getValue();
-            
-            // Clear days panel except for day labels
             daysPanel.removeAll();
-            
-            // Add day labels
             String[] dayLabels = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
             for (String label : dayLabels) {
                 JLabel dayLabel = new JLabel(label, SwingConstants.CENTER);
@@ -609,7 +563,6 @@ public class Work_outPanel extends JPanel {
                 daysPanel.add(new JLabel(""));
             }
             
-            // Add day buttons
             for (int day = 1; day <= daysInMonth; day++) {
                 final int currentDay = day;
                 JButton dayButton = new JButton(String.valueOf(day));
@@ -617,15 +570,10 @@ public class Work_outPanel extends JPanel {
                     selectedDay = currentDay;
                     updateCalendar();
                 });
-                
                 // Highlight selected day
-                if (day == selectedDay) {
-                    dayButton.setBackground(new Color(135, 206, 250));
-                }
-                
+                if (day == selectedDay) dayButton.setBackground(new Color(135, 206, 250));
                 daysPanel.add(dayButton);
             }
-            
             daysPanel.revalidate();
             daysPanel.repaint();
         }
@@ -635,58 +583,6 @@ public class Work_outPanel extends JPanel {
             cal.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0);
             cal.set(java.util.Calendar.MILLISECOND, 0);
             return cal.getTime();
-        }
-    }
-}
-
-// Inner class for rendering edit and delete buttons
-class ButtonsRenderer extends JPanel implements TableCellRenderer {
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value,
-            boolean isSelected, boolean hasFocus, int row, int column) {
-        if (isSelected) {
-            setBackground(table.getSelectionBackground());
-        } else {
-            setBackground(table.getBackground());
-        }
-        return this;
-    }
-    private JButton editBtn;
-    private JButton deleteBtn;
-    
-    public ButtonsRenderer() {
-        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
-        setOpaque(true);
-        
-        editBtn = new JButton("Edit");
-        editBtn.setBackground(new Color(255, 140, 0)); // Darker orange
-        editBtn.setForeground(Color.WHITE);
-        editBtn.setFont(new Font("Georgia", Font.BOLD, 10));
-        editBtn.setFocusPainted(false);
-        
-        deleteBtn = new JButton("Delete");
-        deleteBtn.setBackground(new Color(220, 53, 69)); // Keep red for delete
-        deleteBtn.setForeground(Color.WHITE);
-        deleteBtn.setFont(new Font("georgia", Font.BOLD, 10));
-        deleteBtn.setFocusPainted(false);
-        
-        add(editBtn);
-        add(deleteBtn);
-    }
-    
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == editBtn) {
-            editBtn.setBackground(new Color(255, 140, 0));
-            editBtn.setForeground(Color.WHITE);
-            editBtn.setFont(new Font("Arial", Font.BOLD, 10));
-            editBtn.setFocusPainted(false);
-        }
-        
-        if (e.getSource() == deleteBtn) {
-            deleteBtn.setBackground(new Color(220, 53, 69));
-            deleteBtn.setForeground(Color.WHITE);
-            deleteBtn.setFont(new Font("Georgia", Font.BOLD, 10));
-            deleteBtn.setFocusPainted(false);
         }
     }
 }

@@ -19,8 +19,6 @@ public class User {
 
     public int getUserId() { return userId; }
     public String getName() { return name; }
-    public String getEmail() { return email; }
-
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

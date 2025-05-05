@@ -1,13 +1,11 @@
 package models;
 
-import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import utils.DatabaseConnection;
 
-public class Workout implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Workout {
     private int workoutId;
     private int userId;
     private String workoutType;
@@ -17,7 +15,6 @@ public class Workout implements Serializable {
     private int reps;
     private Timestamp workoutDate;
 
-    // Constructor
     public Workout(int userId, String workoutType, int duration, int calories, int sets, int reps) {
         this.userId = userId;
         this.workoutType = workoutType;
@@ -28,7 +25,6 @@ public class Workout implements Serializable {
         this.workoutDate = new java.sql.Timestamp(System.currentTimeMillis());
     }
 
-    // Getters and Setters
     public int getWorkoutId() { return workoutId; }
     public int getUserId() { return userId; }
     public String getWorkoutType() { return workoutType; }
@@ -43,8 +39,7 @@ public class Workout implements Serializable {
     public void setReps(int reps) { this.reps = reps; }
     public Timestamp getWorkoutDate() { return workoutDate; }
 
-    // Database operations
-    public boolean save() {
+    public boolean saveWorkout() {
         String sql = "INSERT INTO Workouts (user_id, workout_type, duration, calories, sets, reps) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -72,7 +67,7 @@ public class Workout implements Serializable {
     }
 
     // Delete method
-    public boolean delete() {
+    public boolean deleteWorkout() {
         String sql = "DELETE FROM Workouts WHERE workout_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -85,7 +80,7 @@ public class Workout implements Serializable {
     }
 
     // Update method for editing workouts
-    public boolean update() {
+    public boolean updateWorkout() {
         String sql = "UPDATE Workouts SET workout_type = ?, duration = ?, calories = ?, sets = ?, reps = ? WHERE workout_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -102,7 +97,6 @@ public class Workout implements Serializable {
         }
     }
 
-    // Static method to get user's workouts (ArrayList usage)
     public static List<Workout> getUserWorkouts(int userId) {
         List<Workout> workouts = new ArrayList<>();
         String sql = "SELECT * FROM Workouts WHERE user_id = ? ORDER BY workout_date DESC";
@@ -132,8 +126,7 @@ public class Workout implements Serializable {
         return workouts;
     }
     
-    // Get workouts for a specific date
-    public static List<Workout> getUserWorkoutsByDate(int userId, Date date) {
+    public static List<Workout> getUserWorkoutsForSpecificDate(int userId, Date date) {
         List<Workout> workouts = new ArrayList<>();
         String sql = "SELECT * FROM Workouts WHERE user_id = ? AND DATE(workout_date) = ? ORDER BY workout_date DESC";
         
