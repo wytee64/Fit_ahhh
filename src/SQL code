@@ -1,0 +1,45 @@
+-- SELECT User, Host FROM mysql.user;
+
+CREATE DATABASE IF NOT EXISTS fitness_db;
+USE fitness_db;
+
+
+select * from Users;
+
+-- Create a new user (fitBoss)
+-- CREATE USER 'fitBoss'@'localhost' IDENTIFIED BY 'Watermelon';
+
+-- Grant privileges to the user on the fitness_db database
+-- GRANT ALL PRIVILEGES ON fitness_db.* TO 'fitBoss'@'localhost';
+
+-- Refresh privileges to ensure changes take effect
+-- FLUSH PRIVILEGES;
+
+CREATE TABLE IF NOT EXISTS Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS Workouts (
+    workout_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    workout_type VARCHAR(50) NOT NULL,
+    duration INT NOT NULL,
+    calories INT NOT NULL,
+    sets INT DEFAULT 0,
+    reps INT DEFAULT 0,
+    workout_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+select * from users;
+select * from Workouts;
+
+DROP TABLE users;
+DROP TABLE workouts;
+
+

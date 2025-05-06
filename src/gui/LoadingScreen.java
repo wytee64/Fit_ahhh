@@ -10,12 +10,9 @@ import java.awt.event.ActionListener;
 
 public class LoadingScreen extends JWindow {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                LoadingScreen loadingScreen = new LoadingScreen();
-                loadingScreen.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            LoadingScreen loadingScreen = new LoadingScreen();
+            loadingScreen.setVisible(true);
         });
     }
 
