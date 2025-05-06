@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import models.User;
 import models.Workout;
 
-public class Work_outPanel extends JPanel {
+public class Work_outPnl extends JPanel {
     private final User currentUser;
     private JTable workoutTable;
     private DefaultTableModel tableMdl;
@@ -33,7 +33,7 @@ public class Work_outPanel extends JPanel {
 
     private final String[] TypesofWorkouts = {"Running", "Walking", "Cycling", "Swimming", "Weight Training", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "Other"};
 
-    public Work_outPanel(User user) {
+    public Work_outPnl(User user) {
         this.currentUser = user;
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -44,6 +44,7 @@ public class Work_outPanel extends JPanel {
         createButtonPnl();
         startBackgroundRefresh();
     }
+
     private void createFormPnl() {
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2), "Add Workout", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 16), new Color(220, 80, 20)));

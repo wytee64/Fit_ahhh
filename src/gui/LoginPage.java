@@ -5,13 +5,12 @@ import java.awt.*;
 
 import models.User;
 
-
 public class LoginPage extends JFrame {
     private JTextField emailField;
     private JPasswordField passwordField;
     private JTextField nameField;
-    private JTextField regEmailField;
-    private JPasswordField regPasswordField;
+    private JTextField registerEmailField;
+    private JPasswordField registerPasswordField;
     private JPanel cardPanel;
     private CardLayout cardLayout;
 
@@ -46,16 +45,17 @@ public class LoginPage extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         emailField = new JTextField(20);
         passwordField = new JPasswordField(20);
-        JButton loginButton = new JButton("Login");
-        loginButton.setBackground(new Color(220, 80, 20));
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setFont(new Font("Georgia", Font.BOLD, 12));
-        loginButton.setFocusPainted(false);
-        JButton switchToRegisterButton = new JButton("New User? Register");
-        switchToRegisterButton.setBackground(new Color(254, 243, 245));
-        switchToRegisterButton.setForeground(new Color(220, 80, 20));
-        switchToRegisterButton.setBorderPainted(false);
-        switchToRegisterButton.setFocusPainted(false);
+        JButton loginBtn = new JButton("Login");
+        loginBtn.setBackground(new Color(220, 80, 20));
+        loginBtn.setForeground(Color.WHITE);
+        loginBtn.setFont(new Font("Georgia", Font.BOLD, 12));
+        loginBtn.setFocusPainted(false);
+
+        JButton switchToRegisterBtn = new JButton("register or sign up");
+        switchToRegisterBtn.setBackground(new Color(254, 243, 245));
+        switchToRegisterBtn.setForeground(new Color(220, 80, 20));
+        switchToRegisterBtn.setBorderPainted(false);
+        switchToRegisterBtn.setFocusPainted(false);
 
         // addin components to screen
         gbc.gridx = 0; gbc.gridy = 0;
@@ -67,11 +67,11 @@ public class LoginPage extends JFrame {
         gbc.gridx = 1;
         panel.add(passwordField, gbc);
         gbc.gridx = 1; gbc.gridy = 2;
-        panel.add(loginButton, gbc);
+        panel.add(loginBtn, gbc);
         gbc.gridy = 3;
-        panel.add(switchToRegisterButton, gbc);
-        loginButton.addActionListener(e -> handleLogin());
-        switchToRegisterButton.addActionListener(e -> cardLayout.show(cardPanel, "register"));
+        panel.add(switchToRegisterBtn, gbc);
+        loginBtn.addActionListener(e -> login());
+        switchToRegisterBtn.addActionListener(e -> cardLayout.show(cardPanel, "register"));
         return panel;
     }
 
@@ -81,17 +81,27 @@ public class LoginPage extends JFrame {
         panel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(new Color(220, 80, 20), 2),
                 "Fitness track Ahhh",
-                javax.swing.border.TitledBorder.CENTER, 
+                javax.swing.border.TitledBorder.CENTER,
                 javax.swing.border.TitledBorder.TOP,
                 new Font("Georgia", Font.BOLD, 16),
                 new Color(220, 80, 20)));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         nameField = new JTextField(20);
-        regEmailField = new JTextField(20);  // Changed from local variable to class field
-        regPasswordField = new JPasswordField(20);  // Changed from local variable to class field
-        JButton registerButton = new JButton("Register");
-        JButton switchToLoginButton = new JButton("Already have account? Login");
+        registerEmailField = new JTextField(20);  // Changed from local variable to class field
+        registerPasswordField = new JPasswordField(20);  // Changed from local variable to class field
+        JButton registerBtn = new JButton("Register");
+        registerBtn.setBackground(new Color(220, 80, 20));
+        registerBtn.setForeground(Color.WHITE);
+        registerBtn.setFont(new Font("Georgia", Font.BOLD, 12));
+        registerBtn.setFocusPainted(false);
+
+        JButton switchToLoginBtn = new JButton("login");
+        switchToLoginBtn.setBackground(new Color(254, 243, 245));
+        switchToLoginBtn.setForeground(new Color(220, 80, 20));
+        switchToLoginBtn.setBorderPainted(false);
+        switchToLoginBtn.setFocusPainted(false);
+
         gbc.gridx = 0; gbc.gridy = 0;
         panel.add(new JLabel("Name:"), gbc);
         gbc.gridx = 1;
@@ -99,23 +109,22 @@ public class LoginPage extends JFrame {
         gbc.gridx = 0; gbc.gridy = 1;
         panel.add(new JLabel("Email:"), gbc);
         gbc.gridx = 1;
-        panel.add(regEmailField, gbc);
+        panel.add(registerEmailField, gbc);
         gbc.gridx = 0; gbc.gridy = 2;
         panel.add(new JLabel("Password:"), gbc);
         gbc.gridx = 1;
-        panel.add(regPasswordField, gbc);
+        panel.add(registerPasswordField, gbc);
         gbc.gridx = 1; gbc.gridy = 3;
-        panel.add(registerButton, gbc);
+        panel.add(registerBtn, gbc);
         gbc.gridy = 4;
-        panel.add(switchToLoginButton, gbc);
-        registerButton.addActionListener(e -> handleRegister());
-        switchToLoginButton.addActionListener(e -> cardLayout.show(cardPanel, "login"));
+        panel.add(switchToLoginBtn, gbc);
+        registerBtn.addActionListener(e -> signUp());
+        switchToLoginBtn.addActionListener(e -> cardLayout.show(cardPanel, "login"));
         return panel;
     }
 
 
-
-    private void handleLogin() {
+    private void login() {
         String email = emailField.getText();
         String password = new String(passwordField.getPassword());
         if (email.isEmpty() || password.isEmpty()) {
@@ -125,14 +134,17 @@ public class LoginPage extends JFrame {
         User user = new User("", email, password);
         if (user.login(email, password)) {
             JOptionPane.showMessageDialog(this, "login succesful");
-            openMainApplication(user);
+            //go to home page
+            HomePage homePage = new HomePage(user);
+            homePage.setVisible(true);
+            this.dispose();
         } else JOptionPane.showMessageDialog(this, "invalid credentials");
     }
 
-    private void handleRegister() {
+    private void signUp() {
         String name = nameField.getText();
-        String email = regEmailField.getText();  // Changing from emailField
-        String password = new String(regPasswordField.getPassword());  // Changing from passwordField
+        String email = registerEmailField.getText();  // Changing from emailField
+        String password = new String(registerPasswordField.getPassword());  // Changing from passwordField
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all fields");
             return;
@@ -146,7 +158,7 @@ public class LoginPage extends JFrame {
         }
     }
 
-    private void openMainApplication(User user) {
+    private void openHomePage(User user) {
         // creatin and showing main app window
         HomePage homePage = new HomePage(user);
         homePage.setVisible(true);

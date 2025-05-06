@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 // something we thought would be cool to add
 
 public class LoadingScreen extends JWindow {
@@ -40,7 +41,7 @@ public class LoadingScreen extends JWindow {
         pb.setForeground(new Color(220, 80, 20));
         pb.setBackground(new Color(254, 243, 245));
         pb.setFont(new Font("Georgia", Font.BOLD, 12));
-        statusLbl = new JLabel("Loading application...", JLabel.CENTER);
+        statusLbl = new JLabel("......Loading application......", JLabel.CENTER);
         statusLbl.setFont(new Font("Georgia", Font.PLAIN, 12));
         progressPnl.add(pb, BorderLayout.CENTER);
         progressPnl.add(statusLbl, BorderLayout.SOUTH);
@@ -50,6 +51,7 @@ public class LoadingScreen extends JWindow {
         companyNameLbl.setFont(new Font("Georgia", Font.ITALIC, 10));
         companyNameLbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 10));
         mainPnl.add(companyNameLbl, BorderLayout.SOUTH);
+        companyNameLbl.setVisible(true);
 
         setContentPane(mainPnl);
         setSize(400, 200);
@@ -63,30 +65,18 @@ public class LoadingScreen extends JWindow {
             public void actionPerformed(ActionEvent e) {
                 progress += 1;
                 pb.setValue(progress);
-
-                if (progress < 20) {
-                    statusLbl.setText(".......Initializing application.......");
-                } else if (progress < 40) {
-                    statusLbl.setText(".......Loading user interface.......");
-                } else if (progress < 60) {
-                    statusLbl.setText(".......Connecting to database.......");
-                } else if (progress < 80) {
-                    statusLbl.setText(".......Loading workout data.......");
-                } else {
-                    statusLbl.setText(".......Starting application.......");
-                }
-
+                if (progress < 20) statusLbl.setText(".......Initializing application.......");
+                else if (progress < 40) statusLbl.setText(".......Loading user interface.......");
+                else if (progress < 60) statusLbl.setText(".......Connecting to database.......");
+                else if (progress < 80) statusLbl.setText(".......Loading workout data.......");
+                else statusLbl.setText(".......Starting application.......");
                 if (progress >= 100) {
                     timer.stop();
-                    //start the login page
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            dispose();
-                            LoginPage loginPage = new LoginPage();
-                            loginPage.setVisible(true);
-                        }
-                    });                }
+                    //go to login page
+                    dispose();
+                    LoginPage loginPage = new LoginPage();
+                    loginPage.setVisible(true);
+                }
             }
         });
         timer.start();
@@ -95,4 +85,5 @@ public class LoadingScreen extends JWindow {
     private void openLoginPage() {
 
     }
+
 }
