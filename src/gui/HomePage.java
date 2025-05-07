@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 import models.User;
 
 public class HomePage extends JFrame {
-    private Work_outPnl workoutPnl;
+    private WorkoutPnl workoutPnl;
     private JToggleButton darkModeBtn;
     ProgressPnl progress_Pnl;
     private User currentUser;
@@ -23,7 +23,7 @@ public class HomePage extends JFrame {
         mainPnl.setBackground(new Color(240, 248, 255));
         JPanel headerPnl = createHeaderPnl(user);
         mainPnl.add(headerPnl, BorderLayout.NORTH);
-        workoutPnl = new Work_outPnl(user);
+        workoutPnl = new WorkoutPnl(user);
         mainPnl.add(workoutPnl, BorderLayout.CENTER);
         progress_Pnl = new ProgressPnl(user);
         mainPnl.add(progress_Pnl, BorderLayout.EAST);

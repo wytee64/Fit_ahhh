@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import models.User;
 import models.Workout;
 
-public class Work_outPnl extends JPanel {
+public class WorkoutPnl extends JPanel {
     private final User currentUser;
     private JTable workoutTable;
     private DefaultTableModel tableMdl;
@@ -33,7 +33,8 @@ public class Work_outPnl extends JPanel {
 
     private final String[] TypesofWorkouts = {"Running", "Walking", "Cycling", "Swimming", "Weight Training", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "Other"};
 
-    public Work_outPnl(User user) {
+    public WorkoutPnl(User user) {
+        System.out.println("WorkoutPnl - fitness track ahhh");
         this.currentUser = user;
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
