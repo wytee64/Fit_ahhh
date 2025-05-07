@@ -15,6 +15,7 @@ public class LoginPage extends JFrame {
     private CardLayout cardLayout;
 
     public LoginPage() {
+        System.out.println("LoadingPage - fitness track ahhh");
         setTitle("Fitness track Ahhh");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
