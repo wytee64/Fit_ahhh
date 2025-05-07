@@ -12,6 +12,7 @@ public class HomePage extends JFrame {
     ProgressPnl progress_Pnl;
     private User currentUser;
     public HomePage(User user) {
+        System.out.println("HomePage - fitness track ahhh");
         this.currentUser = user;
         setTitle("Fitness track Ahhh....Welcome " + user.getName());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
