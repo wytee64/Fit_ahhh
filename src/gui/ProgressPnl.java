@@ -15,6 +15,7 @@ public class ProgressPnl extends JPanel {
     private JLabel totalDurationLbl;
     
     public ProgressPnl(User user) {
+        System.out.println("ProgressPnl - fitness track ahhh");
         this.currentUser = user;
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createTitledBorder(
