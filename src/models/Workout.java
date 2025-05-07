@@ -16,6 +16,7 @@ public class Workout {
     private Timestamp workoutDate;
 
     public Workout(int userId, String workoutType, int duration, int calories, int sets, int reps) {
+        System.out.println("Workout - fitness track ahhh");
         this.userId = userId;
         this.workoutType = workoutType;
         this.duration = duration;

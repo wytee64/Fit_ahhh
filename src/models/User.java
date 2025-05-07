@@ -12,6 +12,7 @@ public class User {
     private String passwordHash;
 
     public User(String name, String email, String password) {
+        System.out.println("User - fitness track ahhh");
         this.name = name;
         this.email = email;
         this.passwordHash = hashPassword(password);
