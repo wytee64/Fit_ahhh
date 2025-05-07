@@ -21,6 +21,7 @@ public class LoadingScreen extends JWindow {
     private Timer timer;
     private int progress = 0;
     public LoadingScreen() {
+        System.out.println("watermelon - fitness track ahhh");
         JPanel mainPnl = new JPanel(new BorderLayout());
         mainPnl.setBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 3));
         mainPnl.setBackground(new Color(254, 243, 245));
