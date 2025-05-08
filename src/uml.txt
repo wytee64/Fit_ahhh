@@ -151,7 +151,6 @@
 | - handleDeleteWorkout(): void                          |
 | - validateInput(): boolean                             |
 | - populateFormFromTable(row: int): void                |
-| - clearTheFormFields(): void                           |
 | + refreshWorkouts(): void                              |
 | + startBackgroundRefresh(): void                       |
 | + stopBackgroundRefresh(): void                        |

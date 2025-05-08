@@ -18,7 +18,7 @@ public class LoadingScreen extends JWindow {
 
     private JProgressBar pb;
     private JLabel statusLbl;
-    private Timer timer;
+    private final Timer timer;
     private int progress = 0;
     public LoadingScreen() {
         System.out.println("watermelon - fitness track ahhh");
@@ -45,11 +45,11 @@ public class LoadingScreen extends JWindow {
         progressPnl.add(statusLbl, BorderLayout.SOUTH);
         mainPnl.add(titlePnl, BorderLayout.NORTH);
         mainPnl.add(progressPnl, BorderLayout.CENTER);
-        JLabel companyNameLbl = new JLabel("watermelon inc", JLabel.RIGHT);
+        JLabel companyNameLbl = new JLabel("wytee64 inc", JLabel.RIGHT);
         companyNameLbl.setFont(new Font("Georgia", Font.ITALIC, 10));
         companyNameLbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 10));
         mainPnl.add(companyNameLbl, BorderLayout.SOUTH);
-        companyNameLbl.setVisible(true);
+        companyNameLbl.setVisible(false);
 
         setContentPane(mainPnl);
         setSize(400, 200);
@@ -64,8 +64,15 @@ public class LoadingScreen extends JWindow {
                 progress += 1;
                 pb.setValue(progress);
                 if (progress < 20) statusLbl.setText(".......Initializing application.......");
-                else if (progress < 40) statusLbl.setText(".......Loading user interface.......");
-                else if (progress < 60) statusLbl.setText(".......Connecting to database.......");
+                else if (progress < 40) {
+                    statusLbl.setText(".......Loading user interface.......");
+                    companyNameLbl.setVisible(true);
+                }
+
+                else if (progress < 60) {
+                    statusLbl.setText(".......Connecting to database.......");
+                    companyNameLbl.setVisible(false);
+                }
                 else if (progress < 80) statusLbl.setText(".......Loading workout data.......");
                 else statusLbl.setText(".......Starting application.......");
                 if (progress >= 100) {
@@ -78,10 +85,6 @@ public class LoadingScreen extends JWindow {
             }
         });
         timer.start();
-    }
-
-    private void openLoginPage() {
-
     }
 
 }

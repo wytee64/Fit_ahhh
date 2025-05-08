@@ -31,7 +31,7 @@ public class WorkoutPnl extends JPanel {
     private JDateChooser dateChooser;
     private ScheduledExecutorService scheduler;
 
-    private final String[] TypesofWorkouts = {"push ups","Running", "Walking", "weight lifting", "Swimming", "jumping rope", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "pull up",""};
+    private final String[] TypesofWorkouts = {"push ups","Running", "Walking", "weight lifting", "Swimming", "jumping rope", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "pull up","other"};
 
     public WorkoutPnl(User user) {
         System.out.println("WorkoutPnl - fitness track ahhh");
@@ -39,7 +39,6 @@ public class WorkoutPnl extends JPanel {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(new Color(254, 243, 245));
-        // create and start these
         createFormPnl();
         createTablePnl();
         createButtonPnl();
@@ -49,7 +48,7 @@ public class WorkoutPnl extends JPanel {
     private void createFormPnl() {
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2), "Add Workout", TitledBorder.CENTER, TitledBorder.TOP, new Font("Georgia", Font.BOLD, 16), new Color(220, 80, 20)));
-        formPanel.setBackground(new Color(255, 248, 240));
+        formPanel.setBackground(new Color(254, 248, 240));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -60,35 +59,35 @@ public class WorkoutPnl extends JPanel {
         formPanel.add(workoutTypeCombo, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1;
-        formPanel.add(new JLabel("Duration (mins):"), gbc);
+        formPanel.add(new JLabel("duration (mins):"), gbc);
 
         gbc.gridx = 1;
         durationFld = new JTextField(10);
         formPanel.add(durationFld, gbc);
 
         gbc.gridx = 0; gbc.gridy = 2;
-        formPanel.add(new JLabel("Calories:"), gbc);
+        formPanel.add(new JLabel("calories:"), gbc);
 
         gbc.gridx = 1;
         caloriesFld = new JTextField(10);
         formPanel.add(caloriesFld, gbc);
 
         gbc.gridx = 0; gbc.gridy = 3;
-        formPanel.add(new JLabel("Sets:"), gbc);
+        formPanel.add(new JLabel("sets:"), gbc);
 
         gbc.gridx = 1;
         setsFld = new JTextField(10);
         formPanel.add(setsFld, gbc);
 
         gbc.gridx = 0; gbc.gridy = 4;
-        formPanel.add(new JLabel("Reps:"), gbc);
+        formPanel.add(new JLabel("reps:"), gbc);
 
         gbc.gridx = 1;
         repsFld = new JTextField(10);
         formPanel.add(repsFld, gbc);
 
         gbc.gridx = 0; gbc.gridy = 5;
-        formPanel.add(new JLabel("Filter by Date:"), gbc);
+        formPanel.add(new JLabel("filt by Date:"), gbc);
 
         gbc.gridx = 1;
         dateChooser = new JDateChooser();
@@ -98,7 +97,7 @@ public class WorkoutPnl extends JPanel {
     }
     
     private void createTablePnl() {
-        String[] columns = {"ID", "Type", "Duration", "Calories", "Sets", "Reps", "Date"};
+        String[] columns = {"ID", "type", "duration", "calories", "sets", "reps", "date"};
         tableMdl = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -113,11 +112,18 @@ public class WorkoutPnl extends JPanel {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = workoutTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    populateFormFromTable(selectedRow);
+                    fromTableToForm(selectedRow);
                     editBtn.setEnabled(true);
                     deleteBtn.setEnabled(true);
                 } else {
-                    clearTheFormFields();
+                    workoutTypeCombo.setSelectedIndex(0);
+                    durationFld.setText("");
+                    caloriesFld.setText("");
+                    setsFld.setText("");
+                    repsFld.setText("");
+                    workoutTable.clearSelection();
+                    editBtn.setEnabled(false);
+                    deleteBtn.setEnabled(false);
                     editBtn.setEnabled(false);
                     deleteBtn.setEnabled(false);
                 }
@@ -127,35 +133,35 @@ public class WorkoutPnl extends JPanel {
         JScrollPane scrollPane = new JScrollPane(workoutTable);
         scrollPane.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(new Color(220, 80, 20), 2),
-                "Your Workouts",
+                "your Workouts",
                 TitledBorder.CENTER,
                 TitledBorder.TOP,
-                new Font("Arial", Font.BOLD, 16),
-                new Color(220, 80, 20)));
+                new Font("Georgia", Font.BOLD, 16),
+                new Color(221, 80, 22)));
         
         add(scrollPane, BorderLayout.CENTER);
     }
     
     private void createButtonPnl() {
         JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        btnPnl.setBackground(new Color(255, 248, 240));
+        btnPnl.setBackground(new Color(254, 243, 245));
         
-        addBtn = new JButton("Add Workout");
-        addBtn.setBackground(new Color(220, 80, 20)); // PRIMARY color
+        addBtn = new JButton("add workout");
+        addBtn.setBackground(new Color(220, 80, 20));
         addBtn.setForeground(Color.WHITE);
         addBtn.setFont(new Font("Georgia", Font.BOLD, 12));
         addBtn.setFocusPainted(false);
         addBtn.addActionListener(e -> addWorkout());
         
-        editBtn = new JButton("Update Selected");
-        editBtn.setBackground(new Color(220, 80, 20)); // PRIMARY color
+        editBtn = new JButton("update selected");
+        editBtn.setBackground(new Color(221, 80, 22));
         editBtn.setForeground(Color.WHITE);
         editBtn.setFont(new Font("Georgia", Font.BOLD, 12));
         editBtn.setFocusPainted(false);
         editBtn.setEnabled(false);
         editBtn.addActionListener(e -> handleEditWorkout());
         
-        deleteBtn = new JButton("Delete Selected");
+        deleteBtn = new JButton("delete selected");
         deleteBtn.setBackground(new Color(220, 53, 69));
         deleteBtn.setForeground(Color.WHITE);
         deleteBtn.setFont(new Font("Georgia", Font.BOLD, 12));
@@ -163,10 +169,10 @@ public class WorkoutPnl extends JPanel {
         deleteBtn.setEnabled(false);
         deleteBtn.addActionListener(e -> handleDeleteWorkout());
         
-        refreshBtn = new JButton("Refresh");
-        refreshBtn.setBackground(new Color(255, 140, 0)); // SECONDARY button color
+        refreshBtn = new JButton("refresh");
+        refreshBtn.setBackground(new Color(255, 140, 133));
         refreshBtn.setForeground(Color.WHITE);
-        refreshBtn.setFont(new Font("Arial", Font.BOLD, 12));
+        refreshBtn.setFont(new Font("Georgia", Font.BOLD, 12));
         refreshBtn.setFocusPainted(false);
         refreshBtn.addActionListener(e -> refreshWorkouts());
         
@@ -192,71 +198,76 @@ public class WorkoutPnl extends JPanel {
             
             Workout workout = new Workout(currentUser.getUserId(), workoutType, duration, calories, sets, reps);
             if (workout.saveWorkout()) {
-                JOptionPane.showMessageDialog(this, "Workout added successfully!");
-                clearTheFormFields();
+                JOptionPane.showMessageDialog(this, "workout added");
+                workoutTypeCombo.setSelectedIndex(0);
+                durationFld.setText("");
+                caloriesFld.setText("");
+                setsFld.setText("");
+                repsFld.setText("");
+                workoutTable.clearSelection();
+                editBtn.setEnabled(false);
+                deleteBtn.setEnabled(false);
                 refreshWorkouts();
                 updateProgressPanel();
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to add workout", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "failed to add workout", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Please enter valid numbers", "Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "enter valid numbers", "error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     private void handleEditWorkout() {
         int selectedRow = workoutTable.getSelectedRow();
-        if (selectedRow == -1) {
-            return;
-        }
+        if (selectedRow == -1) return;
         
         try {
-            // Validate input
-            if (!validateInput()) {
-                return;
-            }
+            if (!validateInput()) return;
             
-            // Get workout ID from table
             int workoutId = Integer.parseInt(tableMdl.getValueAt(selectedRow, 0).toString());
-            
-            // Get values from form
+
+            //putting data into local variables from gui inputs
             String workoutType = (String) workoutTypeCombo.getSelectedItem();
             int duration = Integer.parseInt(durationFld.getText());
             int calories = Integer.parseInt(caloriesFld.getText());
             int sets = Integer.parseInt(setsFld.getText());
             int reps = Integer.parseInt(repsFld.getText());
             
-            // Get all workouts to find the one to update
             List<Workout> workouts = Workout.getUserWorkouts(currentUser.getUserId());
-            Workout workoutToUpdate = null;
+            Workout workoutselected = null;
             
             for (Workout w : workouts) {
                 if (w.getWorkoutId() == workoutId) {
-                    workoutToUpdate = w;
+                    workoutselected = w;
                     break;
                 }
             }
             
-            if (workoutToUpdate != null) {
-                // Update workout properties
-                workoutToUpdate.setWorkoutType(workoutType);
-                workoutToUpdate.setDuration(duration);
-                workoutToUpdate.setCalories(calories);
-                workoutToUpdate.setSets(sets);
-                workoutToUpdate.setReps(reps);
+            if (workoutselected != null) {
+                workoutselected.setWorkoutType(workoutType);
+                workoutselected.setDuration(duration);
+                workoutselected.setCalories(calories);
+                workoutselected.setSets(sets);
+                workoutselected.setReps(reps);
                 
-                // Save changes
-                if (workoutToUpdate.updateWorkout()) {
-                    JOptionPane.showMessageDialog(this, "Workout updated successfully!");
-                    clearTheFormFields();
+                if (workoutselected.updateWorkout()) {
+                    JOptionPane.showMessageDialog(this, "workout updated");
+                    workoutTypeCombo.setSelectedIndex(0);
+                    durationFld.setText("");
+                    caloriesFld.setText("");
+                    setsFld.setText("");
+                    repsFld.setText("");
+                    workoutTable.clearSelection();
+                    editBtn.setEnabled(false);
+                    deleteBtn.setEnabled(false);
                     refreshWorkouts();
                     updateProgressPanel();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Failed to update workout", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "failed to update workout", "error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Please enter valid numbers", "Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "enter valid numbers", "error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -266,21 +277,12 @@ public class WorkoutPnl extends JPanel {
             return;
         }
         
-        // Confirm deletion
-        int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Are you sure you want to delete this workout?",
-                "Confirm Deletion",
-                JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "delete workout?", "deleting", JOptionPane.YES_NO_OPTION);
         
-        if (confirm != JOptionPane.YES_OPTION) {
-            return;
-        }
+        if (confirm != JOptionPane.YES_OPTION) return;
         
-        // Get workout ID from table
         int workoutId = Integer.parseInt(tableMdl.getValueAt(selectedRow, 0).toString());
         
-        // Get all workouts to find the one to delete
         List<Workout> workouts = Workout.getUserWorkouts(currentUser.getUserId());
         Workout workoutToDelete = null;
         
@@ -294,12 +296,20 @@ public class WorkoutPnl extends JPanel {
         if (workoutToDelete != null) {
             // Delete workout
             if (workoutToDelete.deleteWorkout()) {
-                JOptionPane.showMessageDialog(this, "Workout deleted successfully!");
-                clearTheFormFields();
+                JOptionPane.showMessageDialog(this, "workout deleted");
+                workoutTypeCombo.setSelectedIndex(0);
+                durationFld.setText("");
+                caloriesFld.setText("");
+                setsFld.setText("");
+                repsFld.setText("");
+                workoutTable.clearSelection();
+                editBtn.setEnabled(false);
+                deleteBtn.setEnabled(false);
+
                 refreshWorkouts();
                 updateProgressPanel();
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to delete workout", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "failed to delete workout", "error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -328,8 +338,8 @@ public class WorkoutPnl extends JPanel {
         return true;
     }
     
-    private void populateFormFromTable(int row) {
-        //this moves the data from the table to the form to be edited or deleted
+    private void fromTableToForm(int row) {
+        //from table to form
         String workoutType = tableMdl.getValueAt(row, 1).toString();
         String duration = tableMdl.getValueAt(row, 2).toString();
         String calories = tableMdl.getValueAt(row, 3).toString();
@@ -342,17 +352,7 @@ public class WorkoutPnl extends JPanel {
         setsFld.setText(sets);
         repsFld.setText(reps);
     }
-    
-    private void clearTheFormFields() {
-        workoutTypeCombo.setSelectedIndex(0);
-        durationFld.setText("");
-        caloriesFld.setText("");
-        setsFld.setText("");
-        repsFld.setText("");
-        workoutTable.clearSelection();
-        editBtn.setEnabled(false);
-        deleteBtn.setEnabled(false);
-    }
+
     
     public void refreshWorkouts() {
         tableMdl.setRowCount(0);
@@ -361,13 +361,11 @@ public class WorkoutPnl extends JPanel {
         List<Workout> workouts;
         
         if (selectedDate != null) {
-
             Date sqlDate = new Date(selectedDate.getTime());
             workouts = Workout.getAllTheWorkoutsForSpecificDate(currentUser.getUserId(), sqlDate);
-        } else {
-            //gets all dates
-            workouts = Workout.getUserWorkouts(currentUser.getUserId());
         }
+        else workouts = Workout.getUserWorkouts(currentUser.getUserId());
+
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         
@@ -404,9 +402,8 @@ public class WorkoutPnl extends JPanel {
         
         if (parent instanceof HomePage) {
             HomePage homePage = (HomePage) parent;
-            // gets the progress pnl and updates it
             if (homePage.progress_Pnl != null) {
-                homePage.progress_Pnl.updateStats();
+                homePage.progress_Pnl.updateTodaysProgress();
             }
         }
     }
@@ -432,13 +429,13 @@ public class WorkoutPnl extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JDialog dialog = new JDialog();
-                    dialog.setTitle("Select Date");
+                    dialog.setTitle("date");
                     dialog.setModal(true);
                     
                     JPanel pnl = new JPanel(new BorderLayout());
                     JCalendar calendar = new JCalendar();
                     
-                    JButton okBtn = new JButton("OK");
+                    JButton okBtn = new JButton("ok");
                     okBtn.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -473,7 +470,7 @@ public class WorkoutPnl extends JPanel {
         private final JComboBox<String> monthCombo;
         private final JSpinner yearSpinner;
         private final JPanel daysPanel;
-        private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        private final String[] months = {"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
         private int selectedDay;
         private int selectedMonth;
         private int selectedYear;
@@ -486,7 +483,7 @@ public class WorkoutPnl extends JPanel {
             headerPanel.add(monthCombo);
             headerPanel.add(yearSpinner);
             daysPanel = new JPanel(new GridLayout(0, 7));
-            String[] dayLabels = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
+            String[] dayLabels = {"su", "mo", "tu", "we", "th", "fr", "sa"};
             for (String label : dayLabels) {
                 JLabel dayLabel = new JLabel(label, SwingConstants.CENTER);
                 daysPanel.add(dayLabel);
@@ -508,7 +505,7 @@ public class WorkoutPnl extends JPanel {
             selectedMonth = monthCombo.getSelectedIndex();
             selectedYear = (int) yearSpinner.getValue();
             daysPanel.removeAll();
-            String[] dayLabels = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
+            String[] dayLabels = {"su", "mo", "tu", "we", "th", "fr", "sa"};
             for (String label : dayLabels) {
                 JLabel dayLabel = new JLabel(label, SwingConstants.CENTER);
                 daysPanel.add(dayLabel);

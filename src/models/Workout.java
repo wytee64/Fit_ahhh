@@ -26,19 +26,42 @@ public class Workout {
         this.workoutDate = new java.sql.Timestamp(System.currentTimeMillis());
     }
 
-    public int getWorkoutId() { return workoutId; }
-    public int getUserId() { return userId; }
-    public String getWorkoutType() { return workoutType; }
-    public int getDuration() { return duration; }
-    public int getCalories() { return calories; }
-    public void setCalories(int calories) { this.calories = calories; }
-    public void setDuration(int duration) { this.duration = duration; }
-    public void setWorkoutType(String workoutType) { this.workoutType = workoutType; }
-    public int getSets() { return sets; }
-    public void setSets(int sets) { this.sets = sets; }
-    public int getReps() { return reps; }
-    public void setReps(int reps) { this.reps = reps; }
-    public Timestamp getWorkoutDate() { return workoutDate; }
+    public int getWorkoutId() {
+        return workoutId;
+    }
+    public String getWorkoutType() {
+        return workoutType;
+    }
+    public int getDuration() {
+        return duration;
+    }
+    public int getCalories() {
+        return calories;
+    }
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+    public void setWorkoutType(String workoutType) {
+        this.workoutType = workoutType;
+    }
+    public int getSets() {
+        return sets;
+    }
+    public void setSets(int sets) {
+        this.sets = sets;
+    }
+    public int getReps() {
+        return reps;
+    }
+    public void setReps(int reps) {
+        this.reps = reps;
+    }
+    public Timestamp getWorkoutDate() {
+        return workoutDate;
+    }
 
     public boolean saveWorkout() {
         try (Connection conn = DatabaseConnection.getConnection();

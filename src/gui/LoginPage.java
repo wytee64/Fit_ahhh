@@ -38,10 +38,7 @@ public class LoginPage extends JFrame {
     private JPanel createLoginPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(new Color(255, 248, 240));
-        panel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(220, 80, 20), 3), "Login", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP,
-                new Font("Georgia", Font.BOLD, 16),
-                new Color(220, 80, 20)));
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 3), "Login", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new Font("Georgia", Font.BOLD, 16), new Color(220, 80, 20)));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         emailField = new JTextField(20);
@@ -59,8 +56,9 @@ public class LoginPage extends JFrame {
         switchToRegisterBtn.setFocusPainted(false);
 
         // addin components to screen
-        gbc.gridx = 0; gbc.gridy = 0;
-        panel.add(new JLabel("Email:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(new JLabel("email:"), gbc);
         gbc.gridx = 1;
         panel.add(emailField, gbc);
         gbc.gridx = 0; gbc.gridy = 1;
@@ -79,13 +77,7 @@ public class LoginPage extends JFrame {
     private JPanel createRegisterPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(new Color(254, 243, 245));
-        panel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(220, 80, 20), 2),
-                "Fitness track Ahhh",
-                javax.swing.border.TitledBorder.CENTER,
-                javax.swing.border.TitledBorder.TOP,
-                new Font("Georgia", Font.BOLD, 16),
-                new Color(220, 80, 20)));
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2), "Fitness track Ahhh", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new Font("Georgia", Font.BOLD, 16), new Color(221, 80, 20)));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         nameField = new JTextField(20);
@@ -103,19 +95,23 @@ public class LoginPage extends JFrame {
         switchToLoginBtn.setBorderPainted(false);
         switchToLoginBtn.setFocusPainted(false);
 
-        gbc.gridx = 0; gbc.gridy = 0;
-        panel.add(new JLabel("Name:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(new JLabel("name:"), gbc);
         gbc.gridx = 1;
         panel.add(nameField, gbc);
-        gbc.gridx = 0; gbc.gridy = 1;
-        panel.add(new JLabel("Email:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("email:"), gbc);
         gbc.gridx = 1;
         panel.add(registerEmailField, gbc);
-        gbc.gridx = 0; gbc.gridy = 2;
-        panel.add(new JLabel("Password:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("password:"), gbc);
         gbc.gridx = 1;
         panel.add(registerPasswordField, gbc);
-        gbc.gridx = 1; gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         panel.add(registerBtn, gbc);
         gbc.gridy = 4;
         panel.add(switchToLoginBtn, gbc);
@@ -129,17 +125,18 @@ public class LoginPage extends JFrame {
         String email = emailField.getText();
         String password = new String(passwordField.getPassword());
         if (email.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Some fields not filled");
+            JOptionPane.showMessageDialog(this, "some fields not filled");
             return;
         }
         User user = new User("", email, password);
         if (user.login(email, password)) {
             JOptionPane.showMessageDialog(this, "login succesful");
+
             //go to home page
             HomePage homePage = new HomePage(user);
             homePage.setVisible(true);
             this.dispose();
-        } else JOptionPane.showMessageDialog(this, "invalid credentials");
+        } else JOptionPane.showMessageDialog(this, "invalid login details");
     }
 
     private void signUp() {
@@ -152,7 +149,7 @@ public class LoginPage extends JFrame {
         }
         User user = new User(name, email, password);
         if (user.register()) {
-            JOptionPane.showMessageDialog(this, "successfully registered!");
+            JOptionPane.showMessageDialog(this, "successfully registered");
             cardLayout.show(cardPanel, "login");
         } else {
             JOptionPane.showMessageDialog(this, "failed to register");

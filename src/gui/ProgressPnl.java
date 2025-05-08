@@ -44,13 +44,13 @@ public class ProgressPnl extends JPanel {
         
         add(statsPanel, BorderLayout.CENTER);
         
-        updateStats();
+        updateTodaysProgress();
     }
 
-    public void updateStats() {
+    public void updateTodaysProgress() {
         List<Workout> allWorkouts = Workout.getUserWorkouts(currentUser.getUserId());
         
-        // filter for todays workout
+        // get todays workout only
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String today = sdf.format(new Date());
         List<Workout> todaysWorkouts = new ArrayList<>();
@@ -59,7 +59,7 @@ public class ProgressPnl extends JPanel {
             if (workoutDate.equals(today)) todaysWorkouts.add(workout);
         }
         
-        // Calculate satistics
+        // Calculating totals for the day
         int totalWorkouts = todaysWorkouts.size();
         int totalCalories = 0;
         int totalDuration = 0;

@@ -8,7 +8,6 @@ import models.User;
 
 public class HomePage extends JFrame {
     private WorkoutPnl workoutPnl;
-    private JToggleButton darkModeBtn;
     ProgressPnl progress_Pnl;
     private User currentUser;
     public HomePage(User user) {
@@ -49,27 +48,20 @@ public class HomePage extends JFrame {
         pnl.add(welcomeLbl, BorderLayout.WEST);
         JPanel controlsPnl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         controlsPnl.setOpaque(false);
-        darkModeBtn = new JToggleButton("Dark Mode");
-        darkModeBtn.setFocusPainted(false);
-        darkModeBtn.addActionListener(e -> switchToDarkMode(darkModeBtn.isSelected()));
+
         JButton log_outBtn = new JButton("log out");
         log_outBtn.setBackground(new Color(220, 53, 69));
         log_outBtn.setForeground(Color.WHITE);
         log_outBtn.setFocusPainted(false);
         log_outBtn.addActionListener(e -> logout());
-        controlsPnl.add(darkModeBtn);
+
         controlsPnl.add(log_outBtn);
         pnl.add(controlsPnl, BorderLayout.EAST);
         return pnl;
     }
 
-
-    private void switchToDarkMode(boolean darkMode) {
-       //do last after everthin else is done if theres time
-    }
-
     private void logout() {
-        if (workoutPnl != null) workoutPnl.stopBackgroundRefresh(); //stopping background threads
+        if (workoutPnl != null) workoutPnl.stopBackgroundRefresh(); //stopping background threads for refreshing
 
         SwingUtilities.invokeLater(() -> {
             new LoginPage().setVisible(true);

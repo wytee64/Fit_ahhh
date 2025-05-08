@@ -18,8 +18,10 @@ public class User {
         this.passwordHash = hashPassword(password);
     }
 
-    public int getUserId() { return userId; }
-    public String getName() { return name; }
+    public int getUserId() {
+        return userId; }
+    public String getName() {
+        return name; }
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
