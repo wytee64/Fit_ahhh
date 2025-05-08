@@ -31,7 +31,7 @@ public class WorkoutPnl extends JPanel {
     private JDateChooser dateChooser;
     private ScheduledExecutorService scheduler;
 
-    private final String[] TypesofWorkouts = {"Running", "Walking", "Cycling", "Swimming", "Weight Training", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "Other"};
+    private final String[] TypesofWorkouts = {"push ups","Running", "Walking", "weight lifting", "Swimming", "jumping rope", "Yoga", "Pilates", "Basketball", "Football", "Tennis", "pull up",""};
 
     public WorkoutPnl(User user) {
         System.out.println("WorkoutPnl - fitness track ahhh");
@@ -48,7 +48,7 @@ public class WorkoutPnl extends JPanel {
 
     private void createFormPnl() {
         JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2), "Add Workout", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 16), new Color(220, 80, 20)));
+        formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2), "Add Workout", TitledBorder.CENTER, TitledBorder.TOP, new Font("Georgia", Font.BOLD, 16), new Color(220, 80, 20)));
         formPanel.setBackground(new Color(255, 248, 240));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);

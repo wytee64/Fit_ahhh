@@ -89,8 +89,8 @@ public class LoginPage extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         nameField = new JTextField(20);
-        registerEmailField = new JTextField(20);  // Changed from local variable to class field
-        registerPasswordField = new JPasswordField(20);  // Changed from local variable to class field
+        registerEmailField = new JTextField(20);
+        registerPasswordField = new JPasswordField(20);
         JButton registerBtn = new JButton("Register");
         registerBtn.setBackground(new Color(220, 80, 20));
         registerBtn.setForeground(Color.WHITE);
@@ -144,18 +144,18 @@ public class LoginPage extends JFrame {
 
     private void signUp() {
         String name = nameField.getText();
-        String email = registerEmailField.getText();  // Changing from emailField
-        String password = new String(registerPasswordField.getPassword());  // Changing from passwordField
+        String email = registerEmailField.getText();
+        String password = new String(registerPasswordField.getPassword());
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields");
+            JOptionPane.showMessageDialog(this, "fill in all fields please");
             return;
         }
         User user = new User(name, email, password);
         if (user.register()) {
-            JOptionPane.showMessageDialog(this, "Registration successful!");
+            JOptionPane.showMessageDialog(this, "successfully registered!");
             cardLayout.show(cardPanel, "login");
         } else {
-            JOptionPane.showMessageDialog(this, "Registration failed");
+            JOptionPane.showMessageDialog(this, "failed to register");
         }
     }
 
