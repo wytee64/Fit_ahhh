@@ -1,0 +1,95 @@
+Explanation of Each Class and Their Relationships:
+DatabaseConnection:
+
+Attributes:
+
+URL: The URL to connect to the database.
+
+USER: The username for the database connection.
+
+PASSWORD: The password for the database connection.
+
+Methods:
+
+getConnection(): Establishes a connection to the database using the provided credentials.
+
+Role: This class is used to establish and manage the connection to your MySQL database. Other classes can call this to access data in the database.
+
+User (Abstract Class):
+
+Attributes:
+
+id: The user's ID.
+
+name: The user's name.
+
+email: The user's email.
+
+password: The user's password.
+
+Methods:
+
+Getter methods for id, name, email, and password.
+
+Role: This is the base class for all types of users (e.g., Beginner, Intermediate, Expert). It provides a foundation with common properties for user information.
+
+Beginner (Subclass of User):
+
+Attributes:
+
+level: The user's skill level (e.g., Beginner).
+
+Methods:
+
+getLevel(): Returns the level of the user.
+
+Role: The Beginner class is a specific type of user. It inherits from the User class but adds properties or methods specific to beginners, such as the user's level.
+
+WorkoutTracker:
+
+Attributes:
+
+workoutList: A list of workouts tracked by the user (assuming this contains workout objects).
+
+progress: The user's progress on their workout routine.
+
+date: The date the workout was logged or tracked.
+
+Methods:
+
+startWorkout(): Begins a workout tracking session.
+
+trackProgress(): Updates or tracks the progress of the workout session.
+
+Role: This class tracks the user's workout history and current progress. It can be used to log workout sessions and calculate progress over time.
+
+ProgressTracker:
+
+Attributes:
+
+workoutProgress: The user's progress on their workout routine.
+
+dietProgress: The user's progress on their diet plan (though the DietPlan class isn't present, this could imply diet-related progress).
+
+Methods:
+
+updateProgress(): Updates the overall workout and/or diet progress for the user.
+
+Role: This class tracks both workout and diet progress. It interacts with the WorkoutTracker to update and manage progress.
+
+Relationships:
+Inheritance:
+
+Beginner inherits from User, meaning it takes on all the properties and methods of User. The Beginner class adds additional functionality (in this case, the level attribute).
+
+Association:
+
+User is connected to WorkoutTracker through a direct relationship, meaning a user can have workout sessions tracked by the WorkoutTracker.
+
+ProgressTracker monitors and updates the progress of both WorkoutTracker (workout progress) and potentially diet progress (although diet isn't represented here).
+
+One-to-Many Relationships:
+
+A User (e.g., Beginner) may have multiple workout sessions, hence the WorkoutTracker class can manage a list of workouts (workoutList).
+
+ProgressTracker aggregates data from WorkoutTracker (and potentially diet data, if that were included).
