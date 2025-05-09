@@ -168,4 +168,33 @@
 | + getConnection(): Connection [static]        |
 +-----------------------------------------------+
 
++------------------------------------+
+|           JDateChooser             |
++------------------------------------+
+| - dateField: JTextField            |
+| - dateButton: JButton              |
+| - date: java.util.Date             |
++------------------------------------+
+| + JDateChooser()                   |
+| + setDate(date: Date): void        |
+| + getDate(): Date                  |
++------------------------------------+
+
+
++------------------------------------+
+|            JCalendar               |
++------------------------------------+
+| - monthCombo: JComboBox<String>   |
+| - yearSpinner: JSpinner           |
+| - daysPanel: JPanel               |
+| - months: String[]                |
+| - selectedDay: int                |
+| - selectedMonth: int              |
+| - selectedYear: int               |
++------------------------------------+
+| + JCalendar()                      |
+| - updateCalendar(): void          |
+| + getDate(): Date                 |
++------------------------------------+
+
 

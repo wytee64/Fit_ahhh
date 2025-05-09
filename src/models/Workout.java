@@ -62,7 +62,6 @@ public class Workout {
     public Timestamp getWorkoutDate() {
         return workoutDate;
     }
-
     public boolean saveWorkout() {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Workouts (user_id, workout_type, duration, calories, sets, reps) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {

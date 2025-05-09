@@ -339,7 +339,6 @@ public class WorkoutPnl extends JPanel {
     }
     
     private void fromTableToForm(int row) {
-        //from table to form
         String workoutType = tableMdl.getValueAt(row, 1).toString();
         String duration = tableMdl.getValueAt(row, 2).toString();
         String calories = tableMdl.getValueAt(row, 3).toString();
