@@ -39,13 +39,13 @@ public class WorkoutPnl extends JPanel {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setBackground(new Color(254, 243, 245));
-        createFormPnl();
-        createTablePnl();
-        createButtonPnl();
+        makeFormPnl();
+        makeTablePnl();
+        makeButtonPnl();
         startBackgroundRefresh();
     }
 
-    private void createFormPnl() {
+    private void makeFormPnl() {
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2), "Add Workout", TitledBorder.CENTER, TitledBorder.TOP, new Font("Georgia", Font.BOLD, 16), new Color(220, 80, 20)));
         formPanel.setBackground(new Color(254, 248, 240));
@@ -57,38 +57,28 @@ public class WorkoutPnl extends JPanel {
         gbc.gridx = 1;
         workoutTypeCombo = new JComboBox<>(TypesofWorkouts);
         formPanel.add(workoutTypeCombo, gbc);
-
         gbc.gridx = 0; gbc.gridy = 1;
         formPanel.add(new JLabel("duration (mins):"), gbc);
-
         gbc.gridx = 1;
         durationFld = new JTextField(10);
         formPanel.add(durationFld, gbc);
-
         gbc.gridx = 0; gbc.gridy = 2;
         formPanel.add(new JLabel("calories:"), gbc);
-
         gbc.gridx = 1;
         caloriesFld = new JTextField(10);
         formPanel.add(caloriesFld, gbc);
-
         gbc.gridx = 0; gbc.gridy = 3;
         formPanel.add(new JLabel("sets:"), gbc);
-
         gbc.gridx = 1;
         setsFld = new JTextField(10);
         formPanel.add(setsFld, gbc);
-
         gbc.gridx = 0; gbc.gridy = 4;
         formPanel.add(new JLabel("reps:"), gbc);
-
         gbc.gridx = 1;
         repsFld = new JTextField(10);
         formPanel.add(repsFld, gbc);
-
         gbc.gridx = 0; gbc.gridy = 5;
         formPanel.add(new JLabel("filt by Date:"), gbc);
-
         gbc.gridx = 1;
         dateChooser = new JDateChooser();
         dateChooser.setDate(new java.util.Date());
@@ -96,7 +86,7 @@ public class WorkoutPnl extends JPanel {
         add(formPanel, BorderLayout.WEST);
     }
     
-    private void createTablePnl() {
+    private void makeTablePnl() {
         String[] columns = {"ID", "type", "duration", "calories", "sets", "reps", "date"};
         tableMdl = new DefaultTableModel(columns, 0) {
             @Override
@@ -131,18 +121,12 @@ public class WorkoutPnl extends JPanel {
         });
         
         JScrollPane scrollPane = new JScrollPane(workoutTable);
-        scrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(220, 80, 20), 2),
-                "your Workouts",
-                TitledBorder.CENTER,
-                TitledBorder.TOP,
-                new Font("Georgia", Font.BOLD, 16),
-                new Color(221, 80, 22)));
+        scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(220, 80, 20), 2),"your Workouts", TitledBorder.CENTER, TitledBorder.TOP, new Font("Georgia", Font.BOLD, 16), new Color(221, 80, 22)));
         
         add(scrollPane, BorderLayout.CENTER);
     }
     
-    private void createButtonPnl() {
+    private void makeButtonPnl() {
         JPanel btnPnl = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnPnl.setBackground(new Color(254, 243, 245));
         
@@ -186,9 +170,7 @@ public class WorkoutPnl extends JPanel {
     
     private void addWorkout() {
         try {
-            if (!validateInput()) {
-                return;
-            }
+            if (!validateInput()) return;
             
             String workoutType = (String) workoutTypeCombo.getSelectedItem();
             int duration = Integer.parseInt(durationFld.getText());
@@ -209,9 +191,7 @@ public class WorkoutPnl extends JPanel {
                 deleteBtn.setEnabled(false);
                 refreshWorkouts();
                 updateProgressPanel();
-            } else {
-                JOptionPane.showMessageDialog(this, "failed to add workout", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            } else JOptionPane.showMessageDialog(this, "failed to add workout", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "enter valid numbers", "error", JOptionPane.ERROR_MESSAGE);
         }
@@ -226,7 +206,6 @@ public class WorkoutPnl extends JPanel {
             
             int workoutId = Integer.parseInt(tableMdl.getValueAt(selectedRow, 0).toString());
 
-            //putting data into local variables from gui inputs
             String workoutType = (String) workoutTypeCombo.getSelectedItem();
             int duration = Integer.parseInt(durationFld.getText());
             int calories = Integer.parseInt(caloriesFld.getText());
@@ -294,7 +273,6 @@ public class WorkoutPnl extends JPanel {
         }
         
         if (workoutToDelete != null) {
-            // Delete workout
             if (workoutToDelete.deleteWorkout()) {
                 JOptionPane.showMessageDialog(this, "workout deleted");
                 workoutTypeCombo.setSelectedIndex(0);
@@ -352,7 +330,6 @@ public class WorkoutPnl extends JPanel {
         repsFld.setText(reps);
     }
 
-    
     public void refreshWorkouts() {
         tableMdl.setRowCount(0);
         

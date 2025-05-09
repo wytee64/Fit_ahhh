@@ -55,7 +55,6 @@ public class LoginPage extends JFrame {
         switchToRegisterBtn.setBorderPainted(false);
         switchToRegisterBtn.setFocusPainted(false);
 
-        // addin components to screen
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(new JLabel("email:"), gbc);
