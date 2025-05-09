@@ -27,7 +27,6 @@ public class HomePage extends JFrame {
         progress_Pnl = new ProgressPnl(user);
         mainPnl.add(progress_Pnl, BorderLayout.EAST);
 
-        // addin the main panel to the frame
         add(mainPnl);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -61,7 +60,7 @@ public class HomePage extends JFrame {
     }
 
     private void logout() {
-        if (workoutPnl != null) workoutPnl.stopBackgroundRefresh(); //stopping background threads for refreshing
+        if (workoutPnl != null) workoutPnl.stopBackgroundRefresh();
 
         SwingUtilities.invokeLater(() -> {
             new LoginPage().setVisible(true);

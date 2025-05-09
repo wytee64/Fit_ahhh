@@ -157,7 +157,6 @@ public class LoginPage extends JFrame {
     }
 
     private void openHomePage(User user) {
-        // creatin and showing main app window
         HomePage homePage = new HomePage(user);
         homePage.setVisible(true);
         this.dispose();
